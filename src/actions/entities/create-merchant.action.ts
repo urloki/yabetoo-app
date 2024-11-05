@@ -1,6 +1,6 @@
 "use server";
 import * as Sentry from "@sentry/nextjs";
-import {CreateMerchant} from "@/src/shemas/entities/create-merchant.schema";
+import {CreateMerchant} from "@/src/shemas/entity/create-merchant.schema";
 import axios, {AxiosError} from "axios";
 
 export const createMerchant = async (data: CreateMerchant) => {

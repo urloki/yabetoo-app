@@ -134,7 +134,9 @@
     "completeProfile": "Complete your profile",
     "overview": "Overview",
     "balance": "Balance",
-    "orders": "Orders"
+    "orders": "Orders",
+    "payment-links": "Payments lint",
+    "products": "Products catalog"
   },
   "shop": {
     "createShop": "Create a shop",

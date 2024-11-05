@@ -1,7 +1,7 @@
 "use server";
 
 
-import {Compagnie} from "@/src/shemas/entities/compagnie.schema";
+import {Compagnie} from "@/src/shemas/entity/compagnie.schema";
 import axios from "axios";
 
 export const getCompagnies = async (): Promise<Compagnie> => {

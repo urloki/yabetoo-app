@@ -1,7 +1,7 @@
 "use server";
 
 
-import {Cities} from "@/src/shemas/entities/city.schema";
+import {Cities} from "@/src/shemas/entity/city.schema";
 import axios from "axios";
 
 export const getCities = async ({

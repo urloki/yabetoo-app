@@ -43,8 +43,8 @@ import { useTranslations } from "next-intl";
 import LocaleSwitcher from "@/components/locale-switcher";
 import {getCompagnies} from "@/src/actions/entities/get-compagnie.action";
 import {getCities} from "@/src/actions/entities/get-cities.action";
-import {Company} from "@/src/shemas/entities/compagnie.schema";
-import {createMerchantSchema} from "@/src/shemas/entities/create-merchant.schema";
+import {Company} from "@/src/shemas/entity/compagnie.schema";
+import {createMerchantSchema} from "@/src/shemas/entity/create-merchant.schema";
 import {createMerchant} from "@/src/actions/entities/create-merchant.action";
 
 function Page() {

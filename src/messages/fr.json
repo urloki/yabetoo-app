@@ -139,7 +139,9 @@
     "completeProfile": "Passer en mode production",
     "overview": "Wallet",
     "balance": "Soldes",
-    "orders": "Commandes"
+    "orders": "Commandes",
+    "payment-links": "Liens de paiement",
+    "products": "Catalogue de produits"
   },
   "shop": {
     "createShop": "Créer une boutique",

@@ -4,7 +4,30 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./i18n.ts");
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "flagsapi.com",
+        //pathname: '/account123/**',
+      },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        //pathname: '/**',
+      },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "prd-yabetoo.s3.eu-west-3.amazonaws.com",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 export default withSentryConfig(withNextIntl(nextConfig), {
