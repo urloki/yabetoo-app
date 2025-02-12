@@ -54,9 +54,12 @@
     "operatorPlaceholder": "Sélectionnez votre opérateur",
     "identityType": "Pièce d'identité",
     "identityTypeDescription": "Choisissez le type d'identité que vous souhaitez utiliser pour votre compte.",
+    "businessRegistrationDocuments": "Merci de renseigner les documents de votre entreprise",
     "identityCard": "Carte d'identité",
     "passport": "Passeport",
-    "driverLicense": "Permis de conduire"
+    "driverLicense": "Permis de conduire",
+    "warningFraudAlert": "Important: certifier l'authenticité des documents",
+    "warningFraudAlertDescription": "En soumettant vos documents, vous certifiez leur authenticité, sinon votre compte peut être suspendu et des actions légales peuvent être prises."
   },
   "register": {
     "title": "Créez votre compte Yabetoo",

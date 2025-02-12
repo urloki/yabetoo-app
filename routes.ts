@@ -31,3 +31,5 @@ export const apiAuthRoutes: string = "/api/auth";
  * @type {string}
  */
 export const DEFAULT_LOGIN_REDIRECT: string = "/balance";
+
+export const adminRoute = "/admin";

@@ -87,7 +87,7 @@ export const intentStatuses = [
   },
   {
     value: "requires_confirmation",
-    label: "En attente de confirmation",
+    label: "Incomplete",
     icon: RiTimeLine,
   },
   {

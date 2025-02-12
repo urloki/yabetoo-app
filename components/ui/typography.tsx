@@ -1,9 +1,11 @@
 import { cn } from "@/lib/utils";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
-import type { ComponentPropsWithRef, ElementType, ForwardedRef } from "react";
-
-import type React from "react";
+import type React, {
+  ComponentPropsWithRef,
+  ElementType,
+  ForwardedRef,
+} from "react";
 import { forwardRef } from "react";
 
 // Source : https://www.totaltypescript.com/pass-component-as-prop-react
@@ -31,7 +33,7 @@ export const typographyVariants = cva("", {
       code: "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
       lead: "text-xl text-muted-foreground",
       large: "text-lg font-semibold",
-      small: "text-sm font-medium leading-none",
+      small: "text-xs font-medium leading-none",
       muted: "text-sm text-muted-foreground",
       link: "font-medium text-cyan-600 hover:underline dark:text-primary",
     },
@@ -100,8 +102,7 @@ const InnerTypography = <
     >,
     "as"
   >,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  ref: ForwardedRef<any>,
+  ref: ForwardedRef<unknown>,
 ) => {
   const Comp = as ?? defaultElementMapping[variant ?? "default"];
   return (

@@ -44,7 +44,7 @@ function TransferButton({ balance }: { balance: number }) {
         onClick={(e) => e.stopPropagation()}
         //className="sm:max-w-lg md:m-5 md:w-[700px]"
       >
-        <SheetHeader>
+        <SheetHeader className="text-start">
           <SheetTitle>Demande de transfert</SheetTitle>
         </SheetHeader>
         <Stepper

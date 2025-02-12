@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 
-interface PersonalData {
+export interface PersonalData {
   countryId: string | undefined;
   typeOfBusiness: string;
   businessStructure: string | undefined;
@@ -23,9 +23,14 @@ interface PersonalData {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   uploadedFiles: any[];
   isLoading: boolean;
+  files: File[];
+  identityType: string;
+  idCardFront: File | undefined;
+  idCardBack: File | undefined;
 }
 
-// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 export const personalDataAtom = atom<PersonalData>({
   typeOfBusiness: "1",
   currentStep: 0,
@@ -45,14 +50,16 @@ export const personalDataAtom = atom<PersonalData>({
   productDescription: undefined,
   uploadedFiles: [],
   isLoading: false,
+  files: [],
+  identityType: "identityCard",
+  idCardFront: undefined,
+  idCardBack: undefined,
 });
 
 export const useOnboardingAtom = () => {
   const [personalData, setPersonalData] = useAtom(personalDataAtom);
 
-  const updatePersonalData = (
-    data: Record<string, string | number | undefined | boolean>,
-  ) => {
+  const updatePersonalData = (data: any) => {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     setPersonalData((prev: any) => ({ ...prev, ...data }));
   };

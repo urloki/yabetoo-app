@@ -6,11 +6,10 @@ import {
   apiAuthRoutes,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
-  publicRoutes,
+  publicRoutes
 } from "@/routes";
 import type { NextRequest } from "next/server";
-import {i18n} from "@/app.config";
-
+import { i18n } from "@/app.config";
 
 const intlMiddleware = createIntlMiddleware({
   locales: i18n.locales,
@@ -20,13 +19,23 @@ const intlMiddleware = createIntlMiddleware({
 
 const { auth } = NextAuth(authConfig);
 
-const authMiddleware = auth((req): any => {
+const authMiddleware = auth(async (req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthRoutes);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+
+  /*if (isLoggedIn && isAdminRoute) {
+    const user = req.auth?.user;
+    //const session = await req.
+    console.log(user);
+    if (!req.auth?.user.roles.includes("admin")) {
+      return Response.redirect(new URL("/login", nextUrl));
+    }
+  }*/
 
   if (isApiAuthRoute) {
     return;

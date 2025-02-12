@@ -9,7 +9,7 @@ function Loader({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <>
       {isLoading ? (
         <div className="mt-20 p-10">
           <div className="flex flex-col space-y-3">
@@ -23,7 +23,7 @@ function Loader({
       ) : (
         children
       )}
-    </div>
+    </>
   );
 }
 

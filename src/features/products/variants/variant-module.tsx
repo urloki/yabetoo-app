@@ -1,34 +1,19 @@
 "use client";
 
-import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
-import { useFieldArray, Controller, type UseFormReturn } from "react-hook-form";
+import {DragHandleDots2Icon, TrashIcon} from "@radix-ui/react-icons";
+import {Controller, useFieldArray, type UseFormReturn} from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Sortable,
-  SortableDragHandle,
-  SortableItem,
-} from "@/components/ui/sortable";
-import { PlusCircle } from "lucide-react";
-import type { ChangeEvent } from "react";
-import { useEffect } from "react";
-import { Separator } from "@/components/ui/separator";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
+import {FormControl, FormField, FormItem, FormLabel,} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {Sortable, SortableDragHandle, SortableItem,} from "@/components/ui/sortable";
+import {PlusCircle} from "lucide-react";
+import type {ChangeEvent} from "react";
+import {useEffect} from "react";
+import {Separator} from "@/components/ui/separator";
 
-import { MoneyInput } from "@/components/ui/money-input";
+import {MoneyInput} from "@/components/ui/money-input";
 import {Product} from "@/src/shemas/product/product.schema";
 import {useAccountAtom} from "@/src/atoms/account.atom";
 
@@ -206,7 +191,7 @@ function VariantModule({ form }: { form: UseFormReturn<Product> }) {
             type="button"
             variant="ghost"
             size="sm"
-            className="flex  items-center justify-start gap-2  text-primary"
+            className="flex items-center justify-start gap-2  text-primary"
             onClick={() => appendOption({ name: "", values: [""] })}
           >
             <PlusCircle className="h-4 w-4" />

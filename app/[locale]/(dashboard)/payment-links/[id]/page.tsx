@@ -13,10 +13,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Analytics from "@/src/features/payments-link/analytics";
-import {getPaymentLinkByIdAction} from "@/src/actions/payment-links/get-payment-link-by-id.action";
-import {useAccountAtom} from "@/src/atoms/account.atom";
-import {QRCodeSVG} from "qrcode.react";
-import {Product} from "@/src/shemas/payments-link/schema";
+import { getPaymentLinkByIdAction } from "@/src/actions/payment-links/get-payment-link-by-id.action";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { QRCodeSVG } from "qrcode.react";
+import { Product } from "@/src/shemas/payments-link/schema";
+import React from "react";
 
 const getCartTotal = (products: Array<Product>) => {
   return products.reduce((acc, product) => {
@@ -24,12 +25,13 @@ const getCartTotal = (products: Array<Product>) => {
   }, 0);
 };
 
-function Page({ params }: { params: { id: string } }) {
+function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = React.use<{ id: string }>(params);
   const { currentAccount } = useAccountAtom();
   const { data, isLoading } = useQuery({
     queryKey: [
       "show-payment-link",
-      params.id,
+      id,
       currentAccount?.id,
       currentAccount?.isLive,
     ],

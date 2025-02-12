@@ -6,12 +6,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableRowActions } from "./row-actions";
 import { DataTableColumnHeader } from "@/components/table/table-column-header";
 import type { z } from "zod";
-import { intentLabels, intentStatuses, payouts } from "@/src/config/constants";
+import { intentLabels, intentStatuses } from "@/src/config/constants";
 import { cn, getBadgeVariant, numberFormat } from "@/lib/utils";
 import DateComponent from "@/components/date-component";
 import Image from "next/image";
-import {intentSchema} from "@/src/shemas/intent/intent.schema";
+import { intentSchema } from "@/src/shemas/intent/intent.schema";
 import Badge from "@/components/ui/badge/Badge";
+import { Smartphone } from "lucide-react";
 
 export const intentColumns: ColumnDef<z.infer<typeof intentSchema>>[] = [
   {
@@ -39,19 +40,53 @@ export const intentColumns: ColumnDef<z.infer<typeof intentSchema>>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Payment ID" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="w-fit max-w-[120px] truncate">
+          <span className="truncate font-medium">{row.getValue("id")}</span>
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "amount",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Montant" />
     ),
     cell: ({ row }) => {
+      const status = intentStatuses.find(
+        (status) => status.value === row.original.status,
+      );
       return (
-        <div>
-          <div className="text-sm font-bold">
+        <div className="flex items-center gap-4">
+          <div className="min-w-[120px] text-sm font-bold">
             {numberFormat(
               row.getValue("amount"),
               row.original.currency.toUpperCase(),
             )}
           </div>
+          {status && (
+            <div className="w-fit">
+              <Badge
+                className="flex items-center gap-2 font-bold"
+                intent={getBadgeVariant(status.value)}
+              >
+                {status.icon && (
+                  <status.icon
+                    className={cn(
+                      "h-4 w-4 text-muted-foreground",
+                      status.value === "succeeded" && "text-green-900",
+                    )}
+                  />
+                )}
+                <span>{status.label}</span>
+              </Badge>
+            </div>
+          )}
         </div>
       );
     },
@@ -59,9 +94,9 @@ export const intentColumns: ColumnDef<z.infer<typeof intentSchema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
+    accessorKey: "label",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment ID" />
+      <DataTableColumnHeader column={column} title="Type" />
     ),
     cell: ({ row }) => {
       const label = intentLabels.find(
@@ -71,45 +106,62 @@ export const intentColumns: ColumnDef<z.infer<typeof intentSchema>>[] = [
       return (
         <div className="flex space-x-2">
           {label && <Badge intent="gray">{label.label}</Badge>}
-          <span className="truncate font-medium">{row.getValue("id")}</span>
         </div>
       );
     },
   },
   /*{
-      accessorKey: "charges",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Payment method" />
-      ),
-      cell: ({ row }) => {
-        // find charge by id
-        const charge = row.original.charges.find(
-          (charge) => charge.id === row.original.chargeId,
-        );
-  
-        if (!charge) {
+        accessorKey: "id",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Payment ID" />
+        ),
+        cell: ({ row }) => {
+          const label = intentLabels.find(
+            (label) => label.value === row.original.label,
+          );
+
           return (
-            <div className="flex w-[120px] items-center">
-              <span className="text-muted-foreground">--</span>
+            <div className="flex space-x-2">
+              {label && <Badge intent="gray">{label.label}</Badge>}
+              <span className="truncate font-medium">{row.getValue("id")}</span>
             </div>
           );
-        }
-  
-        return (
-          <div className="flex w-[120px] items-center">
-            {charge.paymentMethod.type === "momo" && (
-              <Smartphone className="mr-2 h-4 w-4 text-muted-foreground" />
-            )}
-            <span>{charge.paymentMethod.msisdn}</span>
-          </div>
-        );
-      },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
-      },
-    },*/
+        },
+      },*/
   {
     accessorKey: "charges",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Moyen de paiement" />
+    ),
+    cell: ({ row }) => {
+      // find charge by id
+      const charge = row.original.charges.find(
+        (charge) => charge.id === row.original.chargeId,
+      );
+
+      if (!charge) {
+        return (
+          <div className="flex w-[120px] items-center">
+            <span className="text-muted-foreground">--</span>
+          </div>
+        );
+      }
+
+      return (
+        <div className="flex w-[120px] items-center">
+          {charge.paymentMethod.type === "momo" && (
+            <Smartphone className="mr-2 h-4 w-4 text-muted-foreground" />
+          )}
+          <span>{charge.paymentMethod.operator}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: "receiptEmail",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Client" />
     ),
@@ -148,7 +200,7 @@ export const intentColumns: ColumnDef<z.infer<typeof intentSchema>>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  {
+  /* {
     accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
@@ -163,7 +215,7 @@ export const intentColumns: ColumnDef<z.infer<typeof intentSchema>>[] = [
       }
 
       return (
-        <div className="w-[120px]">
+        <div className="w-[250px]">
           <Badge
             className="flex items-center gap-2 font-bold"
             intent={getBadgeVariant(status.value)}
@@ -184,44 +236,44 @@ export const intentColumns: ColumnDef<z.infer<typeof intentSchema>>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
-  },
-  {
-    accessorKey: "payoutStatus",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payout" />
-    ),
-    cell: ({ row }) => {
-      const priority = payouts.find(
-        (priority) => priority.value === row.getValue("payoutStatus"),
-      );
-
-      if (!priority) {
-        return null;
-      }
-
-      return (
-        <div className="flex w-[170px] items-center">
-          <Badge
-            className="flex items-center gap-2"
-            intent={getBadgeVariant(priority.value)}
-          >
-            {priority.icon && (
-              <priority.icon
-                className={cn(
-                  "mr-2 h-4 w-4 text-muted-foreground",
-                  priority.color,
+  },*/
+  /* {
+        accessorKey: "payoutStatus",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Payout" />
+        ),
+        cell: ({ row }) => {
+          const priority = payouts.find(
+            (priority) => priority.value === row.getValue("payoutStatus"),
+          );
+    
+          if (!priority) {
+            return null;
+          }
+    
+          return (
+            <div className="flex w-[170px] items-center">
+              <Badge
+                className="flex items-center gap-2"
+                intent={getBadgeVariant(priority.value)}
+              >
+                {priority.icon && (
+                  <priority.icon
+                    className={cn(
+                      "mr-2 h-4 w-4 text-muted-foreground",
+                      priority.color,
+                    )}
+                  />
                 )}
-              />
-            )}
-            <span>{priority.label}</span>
-          </Badge>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
+                <span>{priority.label}</span>
+              </Badge>
+            </div>
+          );
+        },
+        filterFn: (row, id, value) => {
+          return value.includes(row.getValue(id));
+        },
+      },*/
   {
     accessorKey: "createdAt",
     header: ({ column }) => (

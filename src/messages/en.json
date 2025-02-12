@@ -51,7 +51,10 @@
     "showCustomerPhoneNumberDetails": "This hides your customer support number on invoices and receipts. Your customer support number will still be shown on customer bank and credit card statements.",
     "optional": "optional",
     "operator": "Operator",
-    "operatorPlaceholder": "Select your operator"
+    "operatorPlaceholder": "Select your operator",
+    "businessRegistrationDocuments": "Please fill in the business registration documents",
+    "warningFraudAlert": "Important: Certify the authenticity of the documents",
+    "warningFraudAlertDescription": "By submitting your documents, you certify they authenticity, otherwise, your account may be suspended and legal action may be taken."
   },
   "register": {
     "title": "Create your Yabetoo account",

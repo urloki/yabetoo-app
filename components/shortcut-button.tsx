@@ -17,14 +17,11 @@ export function ShortcutButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          size="sm"
-          className="hidden items-center rounded-full md:flex"
-        >
-          <RiAddLine className="h-4 w-4" />Créer
+        <Button size="sm" className="hidden items-center rounded-full md:flex">
+          <RiAddLine className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mr-10 w-56">
+      <DropdownMenuContent sideOffset={10} className="mr-10 w-56">
         <DropdownMenuLabel>Paiements en ligne</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

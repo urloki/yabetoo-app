@@ -5,9 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Icons } from "@/components/icons";
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import {useAccountAtom} from "@/src/atoms/account.atom";
-import {getProducts} from "@/src/actions/product/get-products";
-import {ProductDataTable} from "@/src/features/products/table/data-table";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { getProducts } from "@/src/actions/product/get-products";
+import { ProductDataTable } from "@/src/features/products/table/data-table";
 import { productColumns } from "@/src/features/products/table/column";
 
 function Page() {

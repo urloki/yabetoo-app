@@ -47,6 +47,19 @@ export const navigation = [
   },*/
 ] as const;
 
+export const payments = [
+  {
+    name: "paymentLinks",
+    href: "/payment-links",
+    icon: RiExchange2Line,
+  },
+  {
+    name: "orders",
+    href: "/payment-links/orders",
+    icon: RiUser4Line,
+  },
+] as const;
+
 export const productsNavigation = [
   {
     title: "Paiements",

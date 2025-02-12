@@ -4,8 +4,6 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { DataTableFacetedFilter } from "@/components/table/table-faceted-filter";
-import { intentStatuses, payouts } from "@/src/config/constants";
 import { DataTableViewOptions } from "@/components/table/table-view-options";
 
 interface DataTableToolbarProps<TData> {
@@ -20,11 +18,18 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-        {table.getColumn("status") && (
+        {/*{table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
             title="Status"
             options={intentStatuses}
+          />
+        )}
+        {table.getColumn("label") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("label")}
+            title="Type"
+            options={intentLabels}
           />
         )}
         {table.getColumn("payoutStatus") && (
@@ -33,7 +38,7 @@ export function DataTableToolbar<TData>({
             title="Payout"
             options={payouts}
           />
-        )}
+        )}*/}
         {isFiltered && (
           <Button
             variant="ghost"

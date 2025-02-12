@@ -8,8 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { FlipWords } from "@/components/ui/flip-words";
 import { Icons } from "@/components/icons";
 import { toast } from "sonner";
-import {useAccountAtom} from "@/src/atoms/account.atom";
-import {getAccounts} from "@/src/actions/account/get-accounts.action";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { getAccounts } from "@/src/actions/account/get-accounts.action";
 
 function Loader({
   isLoading,
@@ -21,7 +21,7 @@ function Loader({
   const words = ["paiements", "clients", "analytiques", "produits"];
 
   return (
-    <div className="h-screen w-full bg-background">
+    <div className="w-full bg-background">
       {isLoading ? (
         <div className="flex h-[40rem] flex-col justify-center px-5 md:px-10">
           <div className="text-2xl font-normal text-neutral-600 dark:text-neutral-400 md:text-4xl">
@@ -39,8 +39,13 @@ function Loader({
 }
 
 function LoadData({ children }: { children: React.ReactNode }) {
-  const { currentAccount, setAccounts, setCurrentAccount } = useAccountAtom();
+  const router = useRouter();
   const { data: session, status } = useSession();
+  if (session?.user.roles.includes("admin")) {
+    router.push("/home");
+  }
+
+  const { currentAccount, setAccounts, setCurrentAccount } = useAccountAtom();
   const { data, isError } = useQuery({
     queryKey: ["accounts"],
     queryFn: () => getAccounts(),
@@ -53,7 +58,6 @@ function LoadData({ children }: { children: React.ReactNode }) {
   }
 
   const [dataLoaded, setDataLoaded] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     if (status === "loading") return;
