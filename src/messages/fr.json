@@ -144,7 +144,9 @@
     "balance": "Soldes",
     "orders": "Commandes",
     "payment-links": "Liens de paiement",
-    "products": "Catalogue de produits"
+    "products": "Catalogue de produits",
+    "org": "Organisation"
+
   },
   "shop": {
     "createShop": "Créer une boutique",

@@ -32,7 +32,7 @@ export default function Header() {
               className={cn(
                 isActive("/developers")
                   ? "text-primary"
-                  : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
+                  : "text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50",
                 "flex items-center gap-x-2.5 rounded-md px-2 py-1.5 text-sm font-medium transition hover:text-primary",
               )}
             >

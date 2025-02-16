@@ -57,15 +57,15 @@ const HorizontalStep = React.forwardRef<HTMLDivElement, HorizontalStepProps>(
         className={cn(
           "stepper__horizontal-step",
           "relative flex items-center transition-all duration-200",
-          "[&:not(:last-child)]:flex-1",
-          "[&:not(:last-child)]:after:transition-all [&:not(:last-child)]:after:duration-200",
-          "[&:not(:last-child)]:after:h-[2px] [&:not(:last-child)]:after:bg-border [&:not(:last-child)]:after:content-['']",
-          "data-[completed=true]:[&:not(:last-child)]:after:bg-primary",
-          "data-[invalid=true]:[&:not(:last-child)]:after:bg-destructive",
+          "not-last:flex-1",
+          "not-last:after:transition-all not-last:after:duration-200",
+          "not-last:after:h-[2px] not-last:after:bg-border not-last:after:content-['']",
+          "data-[completed=true]:not-last:after:bg-primary",
+          "data-[invalid=true]:not-last:after:bg-destructive",
           variant === "circle-alt" &&
-            "flex-1 flex-col justify-start [&:not(:last-child)]:after:relative [&:not(:last-child)]:after:end-[50%] [&:not(:last-child)]:after:start-[50%] [&:not(:last-child)]:after:top-[calc(var(--step-icon-size)/2)] [&:not(:last-child)]:after:order-[-1] [&:not(:last-child)]:after:w-[calc((100%-var(--step-icon-size))-(var(--step-gap)))]",
+            "flex-1 flex-col justify-start not-last:after:relative not-last:after:end-[50%] not-last:after:start-[50%] not-last:after:top-[calc(var(--step-icon-size)/2)] not-last:after:order-[-1] not-last:after:w-[calc((100%-var(--step-icon-size))-(var(--step-gap)))]",
           variant === "circle" &&
-            "[&:not(:last-child)]:after:me-[var(--step-gap)] [&:not(:last-child)]:after:ms-[var(--step-gap)] [&:not(:last-child)]:after:flex-1",
+            "not-last:after:me-(--step-gap) not-last:after:ms-(--step-gap) not-last:after:flex-1",
           variant === "line" &&
             "flex-1 flex-col border-t-[5px] data-[active=true]:border-primary",
           styles?.["horizontal-step"],

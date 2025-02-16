@@ -36,7 +36,7 @@ export function TestBanner({
           <div>
             {!currentAccount?.isLive && (
               <div>
-                <Card className="border-none bg-orange-600 text-white shadow-none">
+                <Card className="border-none bg-orange-600 text-white shadow-none dark:bg-orange-800">
                   <CardHeader className="p-2 pt-0 md:p-4">
                     <CardTitle className="py-3">{t("testMode")}</CardTitle>
                     <CardDescription className="text-white">

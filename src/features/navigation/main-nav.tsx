@@ -33,7 +33,7 @@ function MainNav() {
                 <Link
                   href={item.href}
                   className={cn(
-                    //isActive(item.href)? "bg-primary font-bold" : "hover:text-primary dark:text-gray-400 hover:dark:text-gray-50",
+                    //isActive(item.href)? "bg-primary font-bold" : "hover:text-primary dark:text-gray-400 dark:hover:text-gray-50",
                     "flex items-center gap-x-2.5 rounded-full px-2 py-1.5 text-sm font-medium transition hover:bg-primary-foreground",
                   )}
                 >

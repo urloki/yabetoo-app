@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/sidebar";
 import UserDropdown from "@/src/features/navigation/user-dropdown";
 import MainNav from "@/src/features/navigation/main-nav";
-import AccountDropdown from "@/src/features/navigation/account-dropdown";
 import PaymentNav from "@/src/features/navigation/payment-nav";
 import { SupportNav } from "@/src/features/navigation/support-nav";
 import { TestBanner } from "@/src/features/navigation/test-banner";
+import OrganizationDropdown from "@/src/features/navigation/organization-dropdown";
 
 export function AppSidebar() {
   return (
@@ -19,7 +19,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-0">
         <SidebarMenu>
           <SidebarMenuItem>
-            <AccountDropdown />
+            <OrganizationDropdown />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

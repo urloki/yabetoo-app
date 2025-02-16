@@ -43,7 +43,7 @@ function WithdrawButton({ balance }: { balance: number }) {
       </SheetTrigger>
       <SheetContent
         onClick={(e) => e.stopPropagation()}
-        //className="overflow-auto rounded-md border-none outline-none sm:max-w-lg md:m-5 md:w-[400px] w-[500px] xl:w-[600px]"
+        //className="overflow-auto rounded-md border-none outline-hidden sm:max-w-lg md:m-5 md:w-[400px] w-[500px] xl:w-[600px]"
       >
         <SheetHeader>
           <SheetTitle>Demande de retrait</SheetTitle>

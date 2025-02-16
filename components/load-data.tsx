@@ -1,15 +1,14 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import type React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import { FlipWords } from "@/components/ui/flip-words";
 import { Icons } from "@/components/icons";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { getOrganizations } from "@/src/actions/oraganization.action";
 import { useAccountAtom } from "@/src/atoms/account.atom";
-import { getAccounts } from "@/src/actions/account/get-accounts.action";
+import { toast } from "sonner";
 
 function Loader({
   isLoading,
@@ -21,15 +20,15 @@ function Loader({
   const words = ["paiements", "clients", "analytiques", "produits"];
 
   return (
-    <div className="w-full bg-background">
+    <div className="bg-background w-full">
       {isLoading ? (
         <div className="flex h-[40rem] flex-col justify-center px-5 md:px-10">
-          <div className="text-2xl font-normal text-neutral-600 dark:text-neutral-400 md:text-4xl">
+          <div className="text-2xl font-normal text-neutral-600 md:text-4xl dark:text-neutral-400">
             Récuperation de vos
             <FlipWords words={words} /> <br />
             merci pour votre patience.
           </div>
-          <Icons.spinner className="mt-5 h-10 w-10 animate-spin text-primary" />
+          <Icons.spinner className="text-primary mt-5 h-10 w-10 animate-spin" />
         </div>
       ) : (
         children
@@ -41,15 +40,25 @@ function Loader({
 function LoadData({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { data: session, status } = useSession();
-  if (session?.user.roles.includes("admin")) {
-    router.push("/home");
-  }
 
-  const { currentAccount, setAccounts, setCurrentAccount } = useAccountAtom();
-  const { data, isError } = useQuery({
-    queryKey: ["accounts"],
-    queryFn: () => getAccounts(),
+  console.log("🔴 session", session);
+
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const { data: organizations, isError } = useQuery({
+    queryKey: ["organizations"],
+    queryFn: () => getOrganizations(),
   });
+
+  console.log("🔴 organizations", organizations);
+
+  const {
+    currentAccount,
+    setAccounts,
+    setCurrentAccount,
+    setCurrentOrganization,
+    setOrganizations,
+  } = useAccountAtom();
 
   if (isError) {
     signOut().then(() => {
@@ -57,29 +66,56 @@ function LoadData({ children }: { children: React.ReactNode }) {
     });
   }
 
-  const [dataLoaded, setDataLoaded] = useState(false);
-
   useEffect(() => {
     if (status === "loading") return;
 
-    if (session?.user.accountConfirmed === false || data?.length === 0) {
+    if (organizations?.length === 0) {
       router.push("/setup");
-    } else if (data) {
-      if (!currentAccount && data) {
-        setAccounts(data);
-        setCurrentAccount(data[0]);
+    } else if (organizations && organizations?.length > 0) {
+      if (organizations[0].accounts.length === 0) {
+        router.push("/setup");
+      } else if (organizations) {
+        setOrganizations(organizations);
+        setCurrentOrganization(organizations[0]);
+        setCurrentAccount(organizations[0].accounts[0]);
+        setDataLoaded(true);
+        console.log("🔴 currentAccount", currentAccount);
       }
-      setDataLoaded(true);
     }
   }, [
-    session?.user.accountConfirmed,
-    status,
-    router,
-    data,
     currentAccount,
-    setAccounts,
+    organizations,
+    router,
     setCurrentAccount,
+    setCurrentOrganization,
+    setOrganizations,
   ]);
+
+  /*
+    
+    
+    
+      useEffect(() => {
+        if (status === "loading") return;
+    
+        if (session?.user.accountConfirmed === false || data?.length === 0) {
+          router.push("/setup");
+        } else if (data) {
+          if (!currentAccount && data) {
+            setAccounts(data);
+            setCurrentAccount(data[0]);
+          }
+          setDataLoaded(true);
+        }
+      }, [
+        session?.user.accountConfirmed,
+        status,
+        router,
+        data,
+        currentAccount,
+        setAccounts,
+        setCurrentAccount,
+      ]);*/
 
   return <Loader isLoading={!dataLoaded}>{children}</Loader>;
 }

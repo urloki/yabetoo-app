@@ -18,17 +18,21 @@ import {
   Sparkles,
   Terminal,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { getMerchantDetail } from "@/src/actions/entities/get-merchant.action";
+
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import ThemeSwitcher from "@/components/theme-switcher";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { GearIcon } from "@radix-ui/react-icons";
 
 function UserDropdown() {
-  const { data } = useQuery({
-    queryKey: ["merchant"],
-    queryFn: () => getMerchantDetail(),
-  });
+  const { data } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    router.refresh();
+  }, [data]);
 
   return (
     <DropdownMenu>
@@ -39,20 +43,22 @@ function UserDropdown() {
         >
           <Avatar className="h-8 w-8 rounded-lg">
             <AvatarImage
-              src={`https://api.dicebear.com/7.x/thumbs/svg?seed=${data?.id}`}
+              src={`https://api.dicebear.com/7.x/thumbs/svg?seed=${data?.user?.id}`}
               alt="avatar"
             />
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">{data?.managerName}</span>
-            <span className="truncate text-xs">{data?.managerEmail}</span>
+            <span className="truncate font-semibold">
+              {data?.user.lastName} {data?.user?.firstName}
+            </span>
+            <span className="truncate text-xs">{data?.user?.email}</span>
           </div>
           <ChevronsUpDown className="ml-auto size-4" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
         align="end"
         sideOffset={6}
       >
@@ -60,16 +66,16 @@ function UserDropdown() {
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
-                src={`https://api.dicebear.com/7.x/thumbs/svg?seed=${data?.id}`}
+                src={`https://api.dicebear.com/7.x/thumbs/svg?seed=${data?.user?.id}`}
                 alt="avatar"
               />
               <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-semibold">
-                {data?.managerName}
+                {data?.user?.lastName} {data?.user?.firstName}
               </span>
-              <span className="truncate text-xs">{data?.email}</span>
+              <span className="truncate text-xs">{data?.user?.email}</span>
             </div>
           </div>
         </DropdownMenuLabel>
@@ -91,6 +97,12 @@ function UserDropdown() {
             <Terminal />
             <Link className="items-cente flex gap-2" href="/developers">
               Developer
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <GearIcon />
+            <Link className="items-cente flex gap-2" href="/org/settings">
+              Settings
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>

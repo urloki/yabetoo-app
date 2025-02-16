@@ -10,7 +10,7 @@ type Props = {
 
 const DashboardLayout: React.FC<Props> = async ({ children }) => {
   return (
-    <div className="max-w-screen-3xl mx-auto h-screen overflow-y-scroll scroll-auto bg-background">
+    <div className="max-w-[theme(screens.3xl)] mx-auto h-screen overflow-y-scroll scroll-auto bg-background">
       {children}
     </div>
   );

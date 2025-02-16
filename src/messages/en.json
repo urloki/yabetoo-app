@@ -139,7 +139,8 @@
     "balance": "Balance",
     "orders": "Orders",
     "payment-links": "Payments lint",
-    "products": "Products catalog"
+    "products": "Products catalog",
+    "org": "Organization"
   },
   "shop": {
     "createShop": "Create a shop",
