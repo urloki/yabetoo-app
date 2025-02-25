@@ -80,6 +80,7 @@ export default function DangerZonePage() {
       setActionType(null);
     } catch (error) {
       toast.error(`Failed to ${action.type} organization`);
+      console.error(error);
     }
   };
 
@@ -97,7 +98,7 @@ export default function DangerZonePage() {
             Critical actions that affect your organization
           </p>
         </div>
-        <Badge intent="destructive" className="px-3 py-1">
+        <Badge intent="danger" className="px-3 py-1">
           Critical Settings
         </Badge>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccountAtom } from "@/src/atoms/account.atom";
 import { Dialog } from "@/components/ui/dialog";
 import {
@@ -41,7 +41,7 @@ function OrganizationDropdown() {
 
   useEffect(() => {
     setSelectedAccount(currentAccount);
-  }, [currentAccount, currentAccount]);
+  }, [currentAccount]);
   return (
     <Dialog
       open={showNewAccountDialog}

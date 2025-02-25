@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { FlipWords } from "@/components/ui/flip-words";
 import { Icons } from "@/components/icons";
 import { useQuery } from "@tanstack/react-query";
-import { getOrganizations } from "@/src/actions/oraganization.action";
+import { getOrganizations } from "@/src/actions/organization/oraganization.action";
 import { useAccountAtom } from "@/src/atoms/account.atom";
 import { toast } from "sonner";
 
@@ -37,7 +37,7 @@ function Loader({
   );
 }
 
-function LoadData({ children }: { children: React.ReactNode }) {
+export function LoadData({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -58,6 +58,7 @@ function LoadData({ children }: { children: React.ReactNode }) {
     setCurrentAccount,
     setCurrentOrganization,
     setOrganizations,
+    accounts,
   } = useAccountAtom();
 
   if (isError) {
@@ -69,55 +70,33 @@ function LoadData({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (status === "loading") return;
 
-    if (organizations?.length === 0) {
-      router.push("/setup");
+    if (organizations && organizations?.length === 0) {
+      router.push("/org");
     } else if (organizations && organizations?.length > 0) {
+      setOrganizations(organizations);
+      setCurrentOrganization(organizations[0]);
       if (organizations[0].accounts.length === 0) {
-        router.push("/setup");
-      } else if (organizations) {
-        setOrganizations(organizations);
-        setCurrentOrganization(organizations[0]);
+        router.push("/account");
+      } else if (!currentAccount && organizations) {
         setCurrentAccount(organizations[0].accounts[0]);
+        setAccounts(organizations[0].accounts);
         setDataLoaded(true);
         console.log("🔴 currentAccount", currentAccount);
+      } else {
+        setDataLoaded(true);
       }
     }
   }, [
+    accounts,
     currentAccount,
     organizations,
     router,
+    setAccounts,
     setCurrentAccount,
     setCurrentOrganization,
     setOrganizations,
+    status,
   ]);
-
-  /*
-    
-    
-    
-      useEffect(() => {
-        if (status === "loading") return;
-    
-        if (session?.user.accountConfirmed === false || data?.length === 0) {
-          router.push("/setup");
-        } else if (data) {
-          if (!currentAccount && data) {
-            setAccounts(data);
-            setCurrentAccount(data[0]);
-          }
-          setDataLoaded(true);
-        }
-      }, [
-        session?.user.accountConfirmed,
-        status,
-        router,
-        data,
-        currentAccount,
-        setAccounts,
-        setCurrentAccount,
-      ]);*/
 
   return <Loader isLoading={!dataLoaded}>{children}</Loader>;
 }
-
-export default LoadData;

@@ -52,6 +52,7 @@ export default function OrganizationSettingsPage() {
     },
     onError: (error) => {
       toast.error("Failed to update organization");
+      console.error(error);
     },
   });
 
@@ -99,7 +100,7 @@ export default function OrganizationSettingsPage() {
             <CardHeader>
               <CardTitle>General Information</CardTitle>
               <CardDescription>
-                Update your organization's basic information
+                Update your organization&apos;s basic information
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -109,7 +110,7 @@ export default function OrganizationSettingsPage() {
                   <div className="bg-muted relative h-24 w-24 overflow-hidden rounded-lg border">
                     {form.watch("logoUrl") ? (
                       <Image
-                        src={form.watch("logoUrl")}
+                        src={form.watch("logoUrl") ?? ""}
                         alt="Organization logo"
                         fill
                         className="object-cover"

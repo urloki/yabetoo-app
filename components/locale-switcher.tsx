@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ReactCountryFlag from "react-country-flag";
 import { Navigation } from "lucide-react";
-import {Locale} from "@/app.config";
+import { Locale } from "@/app.config";
 
 const getCountryName = (locale: string) => {
   switch (locale) {
@@ -37,7 +37,6 @@ const getLanguageName = (locale: string) => {
 function LocaleSwitcher() {
   const locale = useLocale();
   const router = useRouter();
-  console.log(locale);
 
   const handleLocaleChange = (locale: Locale) => {
     document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`;
@@ -62,7 +61,7 @@ function LocaleSwitcher() {
         >
           <div className="flex items-start gap-3">
             <ReactCountryFlag
-              className=" rounded-full"
+              className="rounded-full"
               svg
               style={{
                 width: "1.3em",
@@ -72,7 +71,7 @@ function LocaleSwitcher() {
             />
             <div>
               <span>United States</span>
-              <div className="text-xs text-muted-foreground">English</div>
+              <div className="text-muted-foreground text-xs">English</div>
             </div>
           </div>
         </DropdownMenuItem>
@@ -83,7 +82,7 @@ function LocaleSwitcher() {
         >
           <div className="flex items-start gap-3">
             <ReactCountryFlag
-              className=" rounded-full"
+              className="rounded-full"
               svg
               style={{
                 width: "1.3em",
@@ -93,7 +92,7 @@ function LocaleSwitcher() {
             />
             <div>
               <span>France</span>
-              <div className="text-xs text-muted-foreground">Français</div>
+              <div className="text-muted-foreground text-xs">Français</div>
             </div>
           </div>
         </DropdownMenuItem>

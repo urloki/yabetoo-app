@@ -32,7 +32,7 @@ function UserDropdown() {
 
   useEffect(() => {
     router.refresh();
-  }, [data]);
+  }, [router]);
 
   return (
     <DropdownMenu>

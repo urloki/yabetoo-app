@@ -120,7 +120,9 @@ export default function BillingPage() {
                         activeSubscription.startDate,
                       ).toLocaleDateString()}{" "}
                       -{" "}
-                      {new Date(activeSubscription.endDate).toLocaleDateString()}
+                      {new Date(
+                        activeSubscription.endDate,
+                      ).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
@@ -139,63 +141,66 @@ export default function BillingPage() {
           </CardContent>
         </Card>
 
-        {activeSubscription && Object.keys(customCommissionGroups).length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Custom Commissions</CardTitle>
-              <CardDescription>
-                Your custom commission rates for different operators
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {Object.entries(customCommissionGroups).map(([key, commissions]) => (
-                <Collapsible
-                  key={key}
-                  open={openGroups[key]}
-                  onOpenChange={() => toggleGroup(key)}
-                >
-                  <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border p-4 font-medium">
-                    <div className="flex items-center gap-2">
-                      {openGroups[key] ? (
-                        <ChevronDown className="h-4 w-4" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4" />
-                      )}
-                      <span className="capitalize">{key}</span>
-                    </div>
-                    <Badge intent="secondary" className="ml-auto">
-                      {(commissions as any[]).length} operators
-                    </Badge>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="pt-2">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Operator</TableHead>
-                          <TableHead>Rate</TableHead>
-                          <TableHead>Fixed Fee</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {(commissions as any[]).map((commission) => (
-                          <TableRow key={commission.id}>
-                            <TableCell className="font-medium">
-                              {commission.operatorName}
-                            </TableCell>
-                            <TableCell>{commission.rate}%</TableCell>
-                            <TableCell>
-                              {formatCurrency(commission.fixedFee)}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CollapsibleContent>
-                </Collapsible>
-              ))}
-            </CardContent>
-          </Card>
-        )}
+        {activeSubscription &&
+          Object.keys(customCommissionGroups).length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Custom Commissions</CardTitle>
+                <CardDescription>
+                  Your custom commission rates for different operators
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {Object.entries(customCommissionGroups).map(
+                  ([key, commissions]) => (
+                    <Collapsible
+                      key={key}
+                      open={openGroups[key]}
+                      onOpenChange={() => toggleGroup(key)}
+                    >
+                      <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border p-4 font-medium">
+                        <div className="flex items-center gap-2">
+                          {openGroups[key] ? (
+                            <ChevronDown className="h-4 w-4" />
+                          ) : (
+                            <ChevronRight className="h-4 w-4" />
+                          )}
+                          <span className="capitalize">{key}</span>
+                        </div>
+                        <Badge intent="secondary" className="ml-auto">
+                          {(commissions as any[]).length} operators
+                        </Badge>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="pt-2">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Operator</TableHead>
+                              <TableHead>Rate</TableHead>
+                              <TableHead>Fixed Fee</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {(commissions as any[]).map((commission) => (
+                              <TableRow key={commission.id}>
+                                <TableCell className="font-medium">
+                                  {commission.operatorName}
+                                </TableCell>
+                                <TableCell>{commission.rate}%</TableCell>
+                                <TableCell>
+                                  {formatCurrency(commission.fixedFee)}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  ),
+                )}
+              </CardContent>
+            </Card>
+          )}
       </div>
 
       {activeSubscription && (
@@ -214,17 +219,17 @@ export default function BillingPage() {
                   className="flex items-start space-x-3 rounded-lg border p-4"
                 >
                   {feature.isIncluded ? (
-                    <Check className="mt-0.5 h-5 w-5 text-green-500 flex-shrink-0" />
+                    <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
                   ) : (
-                    <X className="mt-0.5 h-5 w-5 text-red-500 flex-shrink-0" />
+                    <X className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" />
                   )}
                   <div>
                     <p className="font-medium">{feature.feature.key}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       {feature.feature.description}
                     </p>
                     {feature.maxNumber > 0 && (
-                      <p className="text-sm font-medium mt-1">
+                      <p className="mt-1 text-sm font-medium">
                         Limit: {feature.maxNumber}
                       </p>
                     )}
@@ -236,67 +241,70 @@ export default function BillingPage() {
         </Card>
       )}
 
-      {activeSubscription?.plan.commissions.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Standard Commission Rates</CardTitle>
-            <CardDescription>
-              Default commission rates for your plan
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {Object.entries(standardCommissionGroups).map(([key, commissions]) => (
-              <Collapsible
-                key={key}
-                open={openGroups[`standard_${key}`]}
-                onOpenChange={() => toggleGroup(`standard_${key}`)}
-              >
-                <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border p-4 font-medium">
-                  <div className="flex items-center gap-2">
-                    {openGroups[`standard_${key}`] ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4" />
-                    )}
-                    <span className="capitalize">{key}</span>
-                  </div>
-                  <Badge intent="secondary" className="ml-auto">
-                    {(commissions as any[]).length} operators
-                  </Badge>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="pt-2">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Operator</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Rate</TableHead>
-                        <TableHead>Fixed Fee</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {(commissions as any[]).map((commission) => (
-                        <TableRow key={commission.id}>
-                          <TableCell className="font-medium">
-                            {commission.operatorName}
-                          </TableCell>
-                          <TableCell className="capitalize">
-                            {commission.category}
-                          </TableCell>
-                          <TableCell>{commission.rate}%</TableCell>
-                          <TableCell>
-                            {formatCurrency(commission.fixedFee)}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CollapsibleContent>
-              </Collapsible>
-            ))}
-          </CardContent>
-        </Card>
-      )}
+      {activeSubscription &&
+        activeSubscription?.plan.commissions.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Standard Commission Rates</CardTitle>
+              <CardDescription>
+                Default commission rates for your plan
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {Object.entries(standardCommissionGroups).map(
+                ([key, commissions]) => (
+                  <Collapsible
+                    key={key}
+                    open={openGroups[`standard_${key}`]}
+                    onOpenChange={() => toggleGroup(`standard_${key}`)}
+                  >
+                    <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border p-4 font-medium">
+                      <div className="flex items-center gap-2">
+                        {openGroups[`standard_${key}`] ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                        <span className="capitalize">{key}</span>
+                      </div>
+                      <Badge intent="secondary" className="ml-auto">
+                        {(commissions as any[]).length} operators
+                      </Badge>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="pt-2">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Operator</TableHead>
+                            <TableHead>Category</TableHead>
+                            <TableHead>Rate</TableHead>
+                            <TableHead>Fixed Fee</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {(commissions as any[]).map((commission) => (
+                            <TableRow key={commission.id}>
+                              <TableCell className="font-medium">
+                                {commission.operatorName}
+                              </TableCell>
+                              <TableCell className="capitalize">
+                                {commission.category}
+                              </TableCell>
+                              <TableCell>{commission.rate}%</TableCell>
+                              <TableCell>
+                                {formatCurrency(commission.fixedFee)}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </CollapsibleContent>
+                  </Collapsible>
+                ),
+              )}
+            </CardContent>
+          </Card>
+        )}
     </div>
   );
 }

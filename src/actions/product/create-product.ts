@@ -1,7 +1,7 @@
 "use server";
 
 import axios, { type AxiosError } from "axios";
-import {getAccountSecret} from "@/src/actions/auth/get-account-secret.action";
+import { getAccountSecret } from "@/src/actions/auth/get-account-secret.action";
 
 export const createProduct = async ({
   data,

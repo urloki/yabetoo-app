@@ -1,5 +1,5 @@
 import { Locale } from "@/app.config";
-import LoadData from "@/components/load-data";
+import { LoadData } from "@/components/load-data";
 import { ConfirmDialogProvider } from "@/components/ui/confirm-dialog";
 import {
   SidebarInset,
