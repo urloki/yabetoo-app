@@ -84,7 +84,7 @@ function TransferButton({ balance }: { balance: number }) {
                 description="Votre demande de retrait est en cours de traitement"
               >
                 <div className="px-2">
-                  <p className="py-3 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground py-3 text-sm">
                     Nous avons bien reçu votre demande de retrait, ce dernier
                     est en cours de traitement. Vous recevrez un email/sms dès
                     que le retrait sera réalisé.

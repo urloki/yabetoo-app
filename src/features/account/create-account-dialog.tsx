@@ -53,7 +53,7 @@ function CreateAccountDialog({ onClose }: { onClose: () => void }) {
     onSuccess: async () => {
       toast.success(t("shopSuccess"));
       await queryClient.refetchQueries({
-        queryKey: ["accounts"],
+        queryKey: ["organizations"],
       });
       onClose();
     },
