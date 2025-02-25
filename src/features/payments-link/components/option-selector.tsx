@@ -16,9 +16,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { z } from "zod";
-import type { paymentLinkSchema } from "@/src/schemas/payment-link-schema";
 import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "next-intl";
+import { paymentLinkSchema } from "@/src/shemas/payments-link/payment-link.schema";
 
 function OptionSelector({
   form,
@@ -54,7 +54,7 @@ function OptionSelector({
           control={form.control}
           name="collectAddress"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 py-2">
+            <FormItem className="flex flex-row items-start space-y-0 space-x-3 py-2">
               <FormControl>
                 <Checkbox
                   checked={field.value}

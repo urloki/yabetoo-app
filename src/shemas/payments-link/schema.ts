@@ -168,8 +168,7 @@ export const schema = z.object({
     .optional(),
 });
 
-
-const productSchema = z.object({
+export const productSchema = z.object({
   id: z.string(),
   productId: z.string(),
   linkId: z.string(),

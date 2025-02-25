@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { getCountries } from "@/src/actions/entities/get-countries.action";
 import { createOrganization } from "@/src/actions/organization/create-organization.action";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
@@ -32,6 +31,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { transferAccountsOrganization } from "@/src/actions/organization/transfer-accounts-organization.action";
+import { getCountries } from "@/src/actions/entities/get-countries.action";
 
 const createOrganizationSchema = z.object({
   name: z.string().min(2).max(50),

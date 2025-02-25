@@ -44,7 +44,7 @@ export const schema = z.object({
   ),
 });
 
-const walletTransactionSchema = z.object({
+export const walletTransactionSchema = z.object({
   id: z.string(),
   object: z.string(),
   walletId: z.string(),
@@ -62,7 +62,7 @@ const walletTransactionSchema = z.object({
   updatedAt: z.string(),
 });
 
-const withdrawSchema = z.object({
+export const withdrawSchema = z.object({
   id: z.string(),
   object: z.string(),
   walletId: z.string(),

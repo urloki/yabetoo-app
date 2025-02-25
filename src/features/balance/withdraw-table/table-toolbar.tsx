@@ -5,8 +5,8 @@ import type { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import { DataTableFacetedFilter } from "@/components/table/table-faceted-filter";
-import { intentStatuses, payouts } from "@/src/config/data";
 import { DataTableViewOptions } from "@/components/table/table-view-options";
+import { intentStatuses, payouts } from "@/src/config/constants";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

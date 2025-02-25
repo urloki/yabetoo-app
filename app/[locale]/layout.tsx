@@ -36,7 +36,7 @@ const RootLayout: React.FC<Props> = async ({ children, params }) => {
 
   const messages = await getMessages();
 
-  const { locale } = params;
+  const { locale } = await params;
   return (
     <html
       lang={locale}

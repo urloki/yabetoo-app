@@ -1,6 +1,5 @@
 "use client";
-import type { PaymentLink } from "@/src/schemas/payment-link/schema";
-import { useAccountAtom } from "@/src/atoms/account-atom";
+
 import { numberFormat } from "@/lib/utils";
 import {
   Card,
@@ -12,8 +11,10 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
-import { paymentLinkSchema } from "@/src/schemas/payment-link-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { paymentLinkSchema } from "@/src/shemas/payments-link/payment-link.schema";
+import { PaymentLink } from "@/src/shemas/payments-link/schema";
 
 function Overview({ link }: { link: PaymentLink | undefined }) {
   const { currentAccount } = useAccountAtom();
@@ -36,7 +37,7 @@ function Overview({ link }: { link: PaymentLink | undefined }) {
         <div>
           <h1 className="text-xl font-bold">Products</h1>
           {link?.type === 1 && (
-            <div className="grid  grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               {link?.allProducts?.map((product) => (
                 <Card key={product.id} className="mt-5 shadow-none">
                   <CardHeader>

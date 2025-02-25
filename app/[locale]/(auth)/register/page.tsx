@@ -33,8 +33,8 @@ import { toast } from "sonner";
 import * as Sentry from "@sentry/nextjs";
 import { useTranslations } from "next-intl";
 import LocaleSwitcher from "@/components/locale-switcher";
-import { createMerchant } from "@/src/actions/entities/create-merchant.action";
 import { PhoneInput } from "@/components/phone-input";
+import { createMerchant } from "@/src/actions/entities/create-merchant.action";
 
 // create user schema
 

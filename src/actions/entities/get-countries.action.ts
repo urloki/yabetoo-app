@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@/auth";
-import {Country} from "@/src/shemas/entity/country.schema";
+import { Country } from "@/src/shemas/entity/country.schema";
 import axios from "axios";
 
 export const getCountries = async (): Promise<Array<Country>> => {
@@ -19,7 +19,8 @@ export const getCountries = async (): Promise<Array<Country>> => {
         Authorization: `Bearer ${session?.user?.token}`,
       },
     })
-    .then((res) => res.data).catch((err) => {
+    .then((res) => res.data)
+    .catch((err) => {
       throw new Error(err);
     });
 };
