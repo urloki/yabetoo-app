@@ -8,8 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AutoForm } from "@/components/ui/autoform";
-import { buildZodFieldConfig } from "@autoform/react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Icons } from "@/components/icons";
@@ -24,10 +22,34 @@ import { useTranslations } from "next-intl";
 import LocaleSwitcher from "@/components/locale-switcher";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { resetPassword } from "@/src/actions/auth/reset-password.action";
-import { ZodProvider } from "@autoform/zod";
 
-const fieldConfig = buildZodFieldConfig();
+const schema = z
+  .object({
+    code: z.string().min(6).max(6),
+    password: z.string().min(6),
+    confirmPassword: z.string().min(6),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Les mots de passe ne correspondent pas",
+        path: ["confirmPassword"],
+      });
+    }
+  });
 
 function Page() {
   const { theme, systemTheme } = useTheme();
@@ -37,32 +59,10 @@ function Page() {
   const t = useTranslations("login");
   const router = useRouter();
 
-  const schema = z.object({
-    code: z.string().min(6).max(6).describe(t("code")),
-    password: z
-      .string()
-      .min(6)
-      .describe(t("password"))
-      .superRefine(
-        fieldConfig({
-          inputProps: {
-            type: "password",
-          },
-        }),
-      ),
-    confirmPassword: z
-      .string()
-      .min(6)
-      .describe(t("confirmPassword"))
-      .superRefine(
-        fieldConfig({
-          inputProps: {
-            type: "password",
-          },
-        }),
-      ),
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {},
   });
-  const schemaProvider = new ZodProvider(schema);
 
   const { isPending, mutate } = useMutation({
     mutationKey: ["reset-password"],
@@ -77,11 +77,6 @@ function Page() {
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    if (values.password !== values.confirmPassword) {
-      toast.error(t("passwordMismatch"));
-      return;
-    }
-
     mutate({
       newPassword: values.password,
       resetCode: values.code,
@@ -108,18 +103,69 @@ function Page() {
           </CardHeader>
 
           <CardContent>
-            <AutoForm schema={schemaProvider} onSubmit={onSubmit}>
-              <div>
-                <Button className="w-full" disabled={isPending}>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("code")}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t("code")} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("password")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder={t("password")}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("confirmPassword")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder={t("confirmPassword")}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button className="w-full" type="submit" disabled={isPending}>
                   {isPending ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <span>{t("resetPasswordButton")}</span>
                   )}
                 </Button>
-              </div>
-            </AutoForm>
+              </form>
+            </Form>
           </CardContent>
+
           <CardFooter className="bg-muted m-3 flex items-center justify-center rounded-md p-0 py-5">
             <p className="text-center text-sm text-gray-500">
               {t("noAccount")}{" "}

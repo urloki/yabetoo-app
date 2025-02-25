@@ -8,18 +8,29 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
-
-import { AutoForm } from "@/components/ui/autoform";
 import { Icons } from "@/components/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/src/providers/react-query-provider";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-
 import { createAccount } from "@/src/actions/account/create-account.action";
-import { ZodProvider } from "@autoform/zod";
 import { getCountries } from "@/src/actions/entities/get-countries.action";
 import { useAccountAtom } from "@/src/atoms/account.atom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+const formSchema = z.object({
+  name: z.string().min(1),
+});
 
 function CreateAccountDialog({ onClose }: { onClose: () => void }) {
   const { data: countries } = useQuery({
@@ -28,12 +39,12 @@ function CreateAccountDialog({ onClose }: { onClose: () => void }) {
   });
   const t = useTranslations("shop");
 
-  const formSchema = z.object({
-    name: z.string().describe(t("shopName")),
-    //country: z.enum(countries?.map((country: any) => country.name)),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
   });
-
-  const schemaProvider = new ZodProvider(formSchema);
 
   const { currentOrganization } = useAccountAtom();
 
@@ -53,7 +64,7 @@ function CreateAccountDialog({ onClose }: { onClose: () => void }) {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const payload = {
-      name: data.name as string,
+      name: data.name,
       countryId: currentOrganization?.countryId as number,
       organizationId: currentOrganization?.id as string,
     };
@@ -67,16 +78,31 @@ function CreateAccountDialog({ onClose }: { onClose: () => void }) {
         <DialogDescription>{t("shopDescription")}</DialogDescription>
       </DialogHeader>
       <div>
-        <AutoForm schema={schemaProvider} onSubmit={onSubmit}>
-          <DialogFooter>
-            <Button>
-              {isPending && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("shopName")}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t("shopName")} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-              {t("createShopBtn")}
-            </Button>
-          </DialogFooter>
-        </AutoForm>
+            />
+            <DialogFooter>
+              <Button type="submit" disabled={isPending}>
+                {isPending && (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                {t("createShopBtn")}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </div>
     </DialogContent>
   );
