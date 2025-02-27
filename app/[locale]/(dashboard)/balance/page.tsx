@@ -27,10 +27,10 @@ function Page() {
     <Loader isLoading={isLoading}>
       <>
         <div className="w-full pb-5">
-          <div className="flex justify-between gap-4 rounded-md border bg-background p-2 py-5">
+          <div className="bg-background flex justify-between gap-4 rounded-md border p-2 py-5">
             <div>
               <div className="flex items-center justify-between">
-                <p className="text-sm text-muted-foreground">{t("balance")}</p>
+                <p className="text-muted-foreground text-sm">{t("balance")}</p>
               </div>
               <div className="text-2xl font-medium">
                 {numberFormat(
@@ -38,7 +38,7 @@ function Page() {
                   currentAccount?.country.currency.code,
                 )}
               </div>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 {t("estimatedWithdraw")}
               </span>
             </div>
@@ -57,7 +57,7 @@ function Page() {
               <TabsTrigger value="withdrawals">{t("withdrawals")}</TabsTrigger>
             </TabsList>
             <TabsContent value="transactions">
-              <Card className="dark:border-none dark:bg-sidebar">
+              <Card className="dark:bg-sidebar dark:border-none">
                 <CardHeader>
                   <CardTitle>{t("transactions")}</CardTitle>
                 </CardHeader>

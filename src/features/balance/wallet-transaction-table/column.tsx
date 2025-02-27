@@ -7,8 +7,8 @@ import { DataTableRowActions } from "./row-actions";
 import { DataTableColumnHeader } from "@/components/table/table-column-header";
 import { numberFormat } from "@/lib/utils";
 import DateComponent from "@/components/date-component";
-import {WalletTransaction} from "@/src/shemas/account/account-balance.schema";
-import {objectTypes} from "@/src/config/constants";
+import { WalletTransaction } from "@/src/shemas/account/account-balance.schema";
+import { objectTypes } from "@/src/config/constants";
 
 export const walletTransactionColumns: ColumnDef<WalletTransaction>[] = [
   {
@@ -128,7 +128,7 @@ export const walletTransactionColumns: ColumnDef<WalletTransaction>[] = [
       return (
         <div className="flex space-x-2">
           <span className="truncate font-medium">
-            {row.getValue("chargeId")}
+            {row.getValue("chargeId") ?? "--"}
           </span>
         </div>
       );

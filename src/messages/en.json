@@ -310,7 +310,7 @@
     "noAccountsTitle": "No Accounts Found",
     "noAccountsDescription": "You need to create an account first before creating an organization",
     "createOrganization": "Create Organization",
-     "transferTitle": "Transfer Existing Accounts",
+    "transferTitle": "Transfer Existing Accounts",
     "transferDescription": "The following accounts will be transferred to this organization:",
     "transferExplanation": "We noticed you have accounts that are not linked to any organization. To ensure proper functionality and access to all features, these accounts need to be associated with an organization. By transferring them to this organization, you'll be able to manage them effectively and access all available features.",
     "transferButton": "Transfer All Accounts"

@@ -1,7 +1,6 @@
 "use client";
 
 import { z } from "zod";
-import { useStepper } from "@/components/ui/stepper";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,12 +29,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import countryData from "@/src/config/country-data";
-import {useAccountAtom} from "@/src/atoms/account.atom";
-import {findCountry, getOperator} from "@/lib/utils";
-import {PhoneInput} from "@/components/ui/phone-input";
-import {requestTransfer} from "@/src/actions/transfer/request-transfer.action";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { findCountry, getOperator } from "@/lib/utils";
+import { PhoneInput } from "@/components/ui/phone-input";
+import { requestTransfer } from "@/src/actions/transfer/request-transfer.action";
+import { Stepper } from "@stepperize/react";
 
-const FirstFormSchema = z.object({
+export const transferRequestSchema = z.object({
   amount: z.string().refine((value) => value !== "", {
     message: "Amount is required",
   }),
@@ -56,25 +56,30 @@ const FirstFormSchema = z.object({
   }),
 });
 
-function TransferRequestStep({ balance }: { balance: number }) {
-  const { nextStep } = useStepper();
+function TransferRequestStep({
+  balance,
+  stepper,
+}: {
+  balance: number;
+  stepper: Stepper;
+}) {
+  //const { nextStep } = useStepper();
   const t = useTranslations("payment");
 
   const { currentAccount } = useAccountAtom();
 
-  const form = useForm<z.infer<typeof FirstFormSchema>>({
-    resolver: zodResolver(FirstFormSchema),
+  const form = useForm<z.infer<typeof transferRequestSchema>>({
+    resolver: zodResolver(transferRequestSchema),
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: requestTransfer,
-    onSuccess: async (response) => {
+    onSuccess: async () => {
       toast.success("Withdrawal request sent");
       await queryClient.invalidateQueries({
         queryKey: ["account-balance"],
       });
-      console.log(response);
-      nextStep();
+      stepper.next();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -82,7 +87,7 @@ function TransferRequestStep({ balance }: { balance: number }) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FirstFormSchema>) {
+  function onSubmit(data: z.infer<typeof transferRequestSchema>) {
     console.log(data);
     mutate({
       accountId: currentAccount?.id as string,
@@ -173,7 +178,7 @@ function TransferRequestStep({ balance }: { balance: number }) {
                   <FormMessage />
                   {form.watch("country") && form.watch("country") === "fr" && (
                     <FormDescription>
-                      <p className="text-xs text-danger-500">
+                      <p className="text-danger-500 text-xs">
                         Les transferts vers les pays de l&apos;UE ne sont pas
                         encore pris en charge.
                       </p>
@@ -213,7 +218,7 @@ function TransferRequestStep({ balance }: { balance: number }) {
                   {!currentAccount?.isLive &&
                     form.watch("operator") === "airtel" && (
                       <FormDescription>
-                        <p className="text-xs text-danger-500">
+                        <p className="text-danger-500 text-xs">
                           Les transferts vers {form.watch("operator")} ne sont
                           pas pris en charge en mode test.
                         </p>
@@ -249,11 +254,15 @@ function TransferRequestStep({ balance }: { balance: number }) {
           </div>
         </div>
 
-        <div className="flex w-full items-center justify-end mt-10">
+        <div className="mt-10 flex w-full items-center justify-end">
           <SheetClose asChild>
             <Button variant="underline">{t("cancel")}</Button>
           </SheetClose>
-          <Button className="rounded-full" disabled={isPending || balance <= 0} type="submit">
+          <Button
+            className="rounded-full"
+            disabled={isPending || balance <= 0}
+            type="submit"
+          >
             {t("transfer")}
             {isPending && (
               <Icons.spinner className="ml-2 h-4 w-4 animate-spin" />

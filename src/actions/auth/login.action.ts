@@ -11,10 +11,6 @@ const login = async (username: string, password: string) => {
   const host = process.env.ACCOUNT_API;
   const url = `${host}/v1/auth/users/login`;
 
-  console.log("🔴 url", url);
-  console.log("🔴 username", username);
-  console.log("🔴 password", password);
-
   return await axios
     .post(
       url,

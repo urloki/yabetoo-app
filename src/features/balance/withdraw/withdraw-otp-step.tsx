@@ -1,6 +1,5 @@
 "use client";
 import { z } from "zod";
-import { useStepper } from "@/components/ui/stepper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -22,25 +21,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { queryClient } from "@/src/providers/react-query-provider";
-import {useAccountAtom} from "@/src/atoms/account.atom";
-import {useWithdrawAtom} from "@/src/atoms/withdraw.atom";
-import {confirmWithdraw} from "@/src/actions/withdraw/confirm-withdraw.action";
-import {cancelWithdraw} from "@/src/actions/withdraw/cancel-withdraw.action";
-import {resendWithdrawOtp} from "@/src/actions/withdraw/resend-withdraw-otp.action";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { useWithdrawAtom } from "@/src/atoms/withdraw.atom";
+import { confirmWithdraw } from "@/src/actions/withdraw/confirm-withdraw.action";
+import { cancelWithdraw } from "@/src/actions/withdraw/cancel-withdraw.action";
+import { resendWithdrawOtp } from "@/src/actions/withdraw/resend-withdraw-otp.action";
+import { Stepper } from "@stepperize/react";
 
-const SecondFormSchema = z.object({
+export const otpSchema = z.object({
   pin: z.string().min(6, {
     message: "Your one-time password must be 6 characters.",
   }),
 });
 
-function WithdrawOTPStep({ id }: { id?: string }) {
-  const { nextStep } = useStepper();
+function WithdrawOTPStep({ id, stepper }: { id?: string; stepper: Stepper }) {
+  //const { nextStep } = useStepper();
   const { currentAccount } = useAccountAtom();
   const { withdrawId } = useWithdrawAtom();
 
-  const form = useForm<z.infer<typeof SecondFormSchema>>({
-    resolver: zodResolver(SecondFormSchema),
+  const form = useForm<z.infer<typeof otpSchema>>({
+    resolver: zodResolver(otpSchema),
     defaultValues: {
       pin: "",
     },
@@ -48,13 +48,12 @@ function WithdrawOTPStep({ id }: { id?: string }) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: confirmWithdraw,
-    onSuccess: async (response) => {
+    onSuccess: async () => {
       toast.success("Withdrawal request sent");
       await queryClient.invalidateQueries({
         queryKey: ["account-balance"],
       });
-      console.log(response);
-      nextStep();
+      stepper.next();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -89,7 +88,7 @@ function WithdrawOTPStep({ id }: { id?: string }) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof SecondFormSchema>) {
+  function onSubmit(data: z.infer<typeof otpSchema>) {
     mutate({
       accountId: currentAccount?.id as string,
       isLive: currentAccount?.isLive as boolean,
