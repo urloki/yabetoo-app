@@ -100,7 +100,6 @@ export default function CreateOrganizationPage() {
     onSuccess: async () => {
       toast.success(t("success"));
       await queryClient.invalidateQueries({ queryKey: ["organizations"] });
-
       router.push("/");
     },
     onError: (error) => {

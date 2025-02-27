@@ -25,10 +25,6 @@ const sidebarNavItems = [
     title: "Danger Zone",
     href: "/org/settings/danger-zone",
   },
-  {
-    title: "Display",
-    href: "/examples/forms/display",
-  },
 ];
 
 interface SettingsLayoutProps {

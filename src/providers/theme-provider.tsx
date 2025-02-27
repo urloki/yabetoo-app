@@ -8,7 +8,7 @@ import {
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   //useAutoLogout();
   return (
-    <NextThemesProvider attribute="class" defaultTheme="light" {...props}>
+    <NextThemesProvider attribute="class" defaultTheme="dark" {...props}>
       {children}
     </NextThemesProvider>
   );
