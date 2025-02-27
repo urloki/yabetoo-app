@@ -1,5 +1,6 @@
 "use client";
-import type * as z from "zod";
+import { z } from "zod";
+
 import {
   Card,
   CardContent,
@@ -22,18 +23,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useMutation } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "next-themes";
-import { PhoneInput } from "@/components/ui/phone-input";
-import countryData from "@/src/config/country-data";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { useRouter } from "next/navigation";
@@ -41,11 +33,29 @@ import { toast } from "sonner";
 import * as Sentry from "@sentry/nextjs";
 import { useTranslations } from "next-intl";
 import LocaleSwitcher from "@/components/locale-switcher";
-import {getCompagnies} from "@/src/actions/entities/get-compagnie.action";
-import {getCities} from "@/src/actions/entities/get-cities.action";
-import {Company} from "@/src/shemas/entity/compagnie.schema";
-import {createMerchantSchema} from "@/src/shemas/entity/create-merchant.schema";
-import {createMerchant} from "@/src/actions/entities/create-merchant.action";
+import { PhoneInput } from "@/components/phone-input";
+import { createMerchant } from "@/src/actions/entities/create-merchant.action";
+
+// create user schema
+
+const schema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(6),
+    firstName: z.string(),
+    lastName: z.string(),
+    phoneNumber: z.string(),
+    confirmPassword: z.string(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Les mots de passe ne correspondent pas",
+        path: ["confirmPassword"],
+      });
+    }
+  });
 
 function Page() {
   const router = useRouter();
@@ -57,49 +67,9 @@ function Page() {
   const isDark =
     theme === "dark" || (theme === "system" && systemTheme === "dark");
 
-  const { data: companies } = useQuery({
-    queryKey: ["compagnies"],
-    queryFn: () => getCompagnies(),
-  });
-
-    console.log("companies", companies);
-
-  const { data: cities } = useQuery({
-    queryKey: ["cities"],
-    queryFn: () =>
-      getCities({
-        countryId: "",
-      }),
-  });
-
-  const findCompany = (id: string): Company | undefined => {
-    return companies?.values.find((company) => company.id === id);
-  };
-
-  const findCities = (countryId: string) => {
-    return cities?.values.filter((city) => city.countryId === countryId);
-  };
-
-  const findCountry = (id: string) => {
-    const compagnie = companies?.values.find((company) => company.id === id);
-
-    return countryData.country.find(
-      (c) => c.code === compagnie?.country.code.toLowerCase(),
-    );
-  };
-
-  const form = useForm<z.infer<typeof createMerchantSchema>>({
-    resolver: zodResolver(createMerchantSchema),
-    defaultValues: {
-      createdFromType: "signIn",
-      role: "merchant",
-      roles: [],
-      documents: [],
-      countryId: "",
-      name: "",
-      enable: true,
-      signInSponsorCode: "",
-    },
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {},
   });
 
   const { isPending, mutate } = useMutation({
@@ -116,14 +86,15 @@ function Page() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof createMerchantSchema>) => {
-    values.phone = values.phone.replace(/\s/g, "");
-    values.countryId = findCompany(values.companyId)?.countryId as string;
-    values.name = `${values.managerFirstName.trim()} ${values.managerName.trim()}`;
+  const onSubmit = async (values: z.infer<typeof schema>) => {
+    console.log("okkk");
+    values.phoneNumber = values.phoneNumber.replace(/\D/g, "");
     console.log(values);
 
     mutate(values);
   };
+
+  console.log(form.formState.errors);
 
   return (
     <Form {...form}>
@@ -143,132 +114,17 @@ function Page() {
                   <h1 className="text-2xl font-semibold tracking-tight">
                     {t("title")}
                   </h1>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     {t("description")}
                   </p>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="grid gap-3">
-                    <FormField
-                      control={form.control}
-                      name="companyId"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t("country")}</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue
-                                  placeholder={t("countryPlaceholder")}
-                                />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {companies?.values.map((company) => (
-                                <SelectItem key={company.id} value={company.id}>
-                                  {company.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <FormField
-                      control={form.control}
-                      name="activitySector"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t("sector")}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <FormField
-                      control={form.control}
-                      name="legalForm"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t("legalForm")}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <FormField
-                      control={form.control}
-                      name="cityId"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t("city")}</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            disabled={form.watch("companyId") == null}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue
-                                  placeholder={t("cityPlaceholder")}
-                                />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {findCities(
-                                findCompany(form.watch("companyId"))
-                                  ?.countryId as string,
-                              )?.map((city) => (
-                                <SelectItem key={city.id} value={city.id}>
-                                  {city.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-                <div className="pt-5">
-                  <div className="grid gap-3">
-                    <FormField
-                      control={form.control}
-                      name="address"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t("address")}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
                 <div className="grid gap-6 pt-5 sm:grid-cols-2">
                   <div className="grid gap-3">
                     <FormField
                       control={form.control}
-                      name="managerFirstName"
+                      name="firstName"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>{t("firstName")}</FormLabel>
@@ -283,7 +139,7 @@ function Page() {
                   <div className="grid gap-3">
                     <FormField
                       control={form.control}
-                      name="managerName"
+                      name="lastName"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>{t("lastName")}</FormLabel>
@@ -300,7 +156,7 @@ function Page() {
                   <div className="grid gap-3">
                     <FormField
                       control={form.control}
-                      name="managerEmail"
+                      name="email"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>{t("email")}</FormLabel>
@@ -315,20 +171,44 @@ function Page() {
                   <div className="grid gap-3">
                     <FormField
                       control={form.control}
-                      name="phone"
+                      name="phoneNumber"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>{t("phone")}</FormLabel>
                           <FormControl>
-                            <PhoneInput
-                              disabled={form.watch("companyId") == null}
-                              format={
-                                findCountry(form.watch("companyId"))?.format ??
-                                ""
-                              }
-                              mask=" "
-                              {...field}
-                            />
+                            <PhoneInput {...field} defaultCountry="CG" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+                <div className="grid gap-6 pt-5 sm:grid-cols-2">
+                  <div className="grid gap-3">
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t("password")}</FormLabel>
+                          <FormControl>
+                            <Input type={"password"} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="grid gap-3">
+                    <FormField
+                      control={form.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t("confirmPassword")}</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="password" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -340,7 +220,7 @@ function Page() {
               <CardFooter className="mt-5">
                 <Button
                   size="lg"
-                  type={"submit"}
+                  type="submit"
                   disabled={isPending}
                   className="w-full"
                 >

@@ -11,8 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import type { paymentLinkSchema } from "@/src/schemas/payment-link-schema";
 import type { z } from "zod";
+import { paymentLinkSchema } from "@/src/shemas/payments-link/payment-link.schema";
 
 const getCta = (cta: string) => {
   switch (cta) {

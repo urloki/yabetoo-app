@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const schema = z.object({
+export const accountSchema = z.object({
   id: z.string(),
   name: z.string(),
   userId: z.string(),
@@ -11,6 +11,7 @@ export const schema = z.object({
   pkLive: z.string(),
   skLive: z.string(),
   isLive: z.boolean(),
+  organizationId: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
   plan: z.object({
@@ -75,4 +76,4 @@ export const schema = z.object({
     .nullable(),
 });
 
-export type Account = z.infer<typeof schema>;
+export type Account = z.infer<typeof accountSchema>;

@@ -88,7 +88,7 @@
     "agreeTerms": "En vous inscrivant, vous acceptez nos {termsAndConditions} et notre {privacyPolicy}.",
     "accountCreatedSuccess": "Votre compte a été créé avec succès. Veuillez vérifier votre e-mail pour activer votre compte.",
     "accountCreationError": "Une erreur s'est produite lors de la création de votre compte.",
-    "copyright": "© Yabetoo. Tous droits réservés."
+    "copyright": " Yabetoo. Tous droits réservés."
   },
   "payment": {
     "payment": "Paiements",
@@ -144,7 +144,8 @@
     "balance": "Soldes",
     "orders": "Commandes",
     "payment-links": "Liens de paiement",
-    "products": "Catalogue de produits"
+    "products": "Catalogue de produits",
+    "org": "Organisation"
   },
   "shop": {
     "createShop": "Créer une boutique",
@@ -209,8 +210,8 @@
     "signUpLink": "Créer un compte",
     "securityTipBadge": "Conseil de sécurité",
     "securityTip": "Vérifiez l'URL pour vous assurer que vous vous connectez à app.yabetoopay.com. Les attaques de phishing utilisent souvent un faux site web pour accéder à vos informations de connexion. Par exemple, les attaquants pourraient utiliser une version mal orthographiée de l'URL.",
-    "copyright": "© Yabetoo. Tous droits réservés.",
-    "username": "Identifiant",
+    "copyright": " Yabetoo. Tous droits réservés.",
+    "username": "Adresse e-mail",
     "password": "Mot de passe",
     "forgotPasswordTitle": "Réinitialiser votre mot de passe",
     "forgotPasswordDescription": "Entrez votre identifiant pour recevoir un lien de réinitialisation de mot de passe",
@@ -223,7 +224,9 @@
     "passwordResetError": "Une erreur s'est produite lors de la réinitialisation de votre mot de passe. Veuillez réessayer.",
     "passwordResetLinkSent": "Un email de réinitialisation de mot de passe a été envoyé à votre adresse email.",
     "confirmPassword": "Confirmer le mot de passe",
-    "passwordMismatch": "Les mots de passe ne correspondent pas"
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "code": "Code de réinitialisation",
+    "email": "Adresse e-mail"
   },
   "intent": {
     "intent": "Paiements",
@@ -254,17 +257,17 @@
     "amountNet": "Montant net"
   },
   "paymentLink": {
-    "title" : "Lien de paiement",
+    "title": "Lien de paiement",
     "selectType": "Sélectionner le type de lien",
     "productsOrSubscriptions": "Produits ou abonnements",
     "customPayment": "Paiement personnalisé",
     "activateLink": "Activer le lien",
     "activateLinkDescription": "Activez le lien pour commencer à recevoir des paiements.",
-    "collecteUserAddress" : "Collecter l'adresse du client",
-    "asCallToAction" : "en tant qu'appel à l'action",
-    "pay" : "Payer",
-    "book" : "Réserver",
-    "donate" : "Donner",
+    "collecteUserAddress": "Collecter l'adresse du client",
+    "asCallToAction": "en tant qu'appel à l'action",
+    "pay": "Payer",
+    "book": "Réserver",
+    "donate": "Donner",
     "customerChooseWhatToPay": "Les clients choisissent le montant à payer",
     "name": "Titre",
     "description": "Description",
@@ -284,5 +287,49 @@
     "minAmount": "Montant minimum",
     "maxAmount": "Montant maximum",
     "selectCurrency": "Sélectionnez une devise"
+  },
+  "organization": {
+    "details": "Détails de l'organisation",
+    "description": "Parlez-nous de votre organisation",
+    "nameQuestion": "Quel est le nom de votre organisation ?",
+    "namePlaceholder": "Entrez le nom de votre organisation",
+    "descriptionQuestion": "De quoi parle votre organisation ?",
+    "descriptionPlaceholder": "Entrez une brève description de votre organisation",
+    "accountNameQuestion": "Comment souhaitez-vous nommer votre compte ?",
+    "accountNamePlaceholder": "Entrez le nom de votre compte",
+    "locationQuestion": "Où se trouve votre organisation ?",
+    "selectCountry": "Sélectionnez un pays",
+    "createButton": "Créer l'organisation",
+    "success": "Organisation créée avec succès",
+    "error": "Échec de la création de l'organisation",
+    "nameMinLength": "Le nom de l'organisation doit comporter au moins 2 caractères",
+    "nameMaxLength": "Le nom de l'organisation doit comporter moins de 50 caractères",
+    "descriptionMaxLength": "La description doit comporter moins de 500 caractères",
+    "accountNameMinLength": "Le nom du compte doit comporter au moins 2 caractères",
+    "accountNameMaxLength": "Le nom du compte doit comporter moins de 50 caractères",
+    "countryRequired": "Veuillez sélectionner un pays",
+    "linkDetails": "Lier les comptes à une nouvelle organisation",
+    "linkDescription": "Créez une nouvelle organisation et liez vos comptes existants",
+    "existingAccounts": "Vos comptes existants",
+    "accountsToLink": "Ces comptes seront liés à votre nouvelle organisation",
+    "noAccountsTitle": "Aucun compte trouvé",
+    "noAccountsDescription": "Vous devez d'abord créer un compte avant de créer une organisation",
+    "createOrganization": "Créer une organisation",
+    "transferTitle": "Transférer les comptes existants",
+    "transferDescription": "Les comptes suivants seront transférés vers cette organisation :",
+    "transferExplanation": "Nous avons remarqué que vous avez un ou plusieurs comptes qui ne sont liés à aucune organisation. Pour garantir un bon fonctionnement et l'accès à toutes les fonctionnalités, ces comptes doivent être associés à une organisation.",
+    "transferButton": "Transférer tous les comptes"
+  },
+  "account": {
+    "title": "Configuration du compte",
+    "description": "Configurons votre compte pour cette organisation",
+    "transferTitle": "Transférer les comptes existants",
+    "transferDescription": "Les comptes suivants seront transférés vers cette organisation :",
+    "transferExplanation": "Nous avons remarqué que vous avez des comptes qui ne sont liés à aucune organisation. Pour garantir un bon fonctionnement et l'accès à toutes les fonctionnalités, ces comptes doivent être associés à une organisation.",
+    "transferButton": "Transférer tous les comptes",
+    "createTitle": "Créer un nouveau compte",
+    "createDescription": "Créer un nouveau compte pour cette organisation",
+    "createButton": "Créer un compte",
+    "cancel": "Annuler"
   }
 }

@@ -19,9 +19,9 @@ import parsePhoneNumberFromString, {
   AsYouType,
   type CarrierCode,
   type CountryCallingCode,
+  type CountryCode,
   type E164Number,
   type NationalNumber,
-  type CountryCode,
   type NumberType,
 } from "libphonenumber-js";
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -152,14 +152,14 @@ export function PhoneInput({
   };
 
   return (
-    <div className={cn("flex gap-2", className)}>
+    <div className={cn("flex", className)}>
       <Popover open={openCommand} onOpenChange={setOpenCommand} modal={true}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={openCommand}
-            className="w-max items-center justify-between whitespace-nowrap"
+            className="h-9 w-max items-center justify-between rounded-md rounded-r-none border-r-0 bg-transparent whitespace-nowrap"
           >
             {selectedCountry?.name ? (
               <span className="relative top-0.5">{selectedCountry.emoji}</span>
@@ -175,9 +175,7 @@ export function PhoneInput({
             <CommandList>
               <CommandEmpty>No country found.</CommandEmpty>
               <ScrollArea
-                className={
-                  "[&>[data-radix-scroll-area-viewport]]:max-h-[300px]"
-                }
+                className={"*:data-radix-scroll-area-viewport:max-h-[300px]"}
               >
                 <CommandGroup>
                   {countries.map((country) => {
@@ -232,6 +230,7 @@ export function PhoneInput({
         name="phone"
         id={id}
         placeholder="Phone"
+        className="f rounded-l-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0"
         defaultValue={initializeDefaultValue()}
         onInput={handleOnInput}
         onPaste={handleOnPaste}

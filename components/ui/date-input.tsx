@@ -34,13 +34,13 @@ function InputDate<T extends DateValue>({
         <Label>{label}</Label>
         <DateInput
           className={cn(
-            "flex h-9 w-fit items-center gap-1 rounded border border-input  bg-transparent px-1  py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-9 w-fit items-center gap-1 rounded border border-input  bg-transparent px-1  py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
         >
           {(segment) => (
             <DateSegment
-              className="rounded px-1 hover:bg-muted focus:bg-muted focus:outline-none"
+              className="rounded px-1 hover:bg-muted focus:bg-muted focus:outline-hidden"
               segment={segment}
             />
           )}

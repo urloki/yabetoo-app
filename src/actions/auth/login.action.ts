@@ -7,41 +7,20 @@ import { LoginSchema } from "@/src/shemas/auth/login.schema";
 import axios from "axios";
 import { UserType } from "@/src/shemas/auth/user.schema";
 
-interface TokenInterface {
-  access_token: string;
-  expires_in: number;
-  token_type: string;
-  scope: string;
-}
-
-const login = async (
-  username: string,
-  password: string,
-): Promise<TokenInterface> => {
-  const host = process.env.YABETOO_AUTH_API;
-  const url = `${host}/connect/token`;
-
-  if (
-    !host ||
-    !process.env.YABETOO_CLIENT_ID ||
-    !process.env.YABETOO_CLIENT_SECRET
-  ) {
-    throw new Error("AUTH API URL not found");
-  }
+const login = async (username: string, password: string) => {
+  const host = process.env.ACCOUNT_API;
+  const url = `${host}/v1/auth/users/login`;
 
   return await axios
     .post(
       url,
-      new URLSearchParams({
+      {
         username: username,
         password: password,
-        client_id: process.env.YABETOO_CLIENT_ID,
-        client_secret: process.env.YABETOO_CLIENT_SECRET,
-        grant_type: "password",
-      }).toString(),
+      },
       {
         headers: {
-          "content-type": "application/x-www-form-urlencoded",
+          "content-type": "application/json",
         },
       },
     )
@@ -68,14 +47,14 @@ export const getUser = async (token: string): Promise<UserType> => {
 export const loginUser = async (username: string, password: string) => {
   try {
     const data = await login(username, password);
-    const user = await getUser(data.access_token);
+    //const user = await getUser(data.access_token);
 
     return {
-      user: user,
-      token: data.access_token,
+      user: data.user,
+      token: data.token,
     };
   } catch (e) {
-    console.log(e);
+    console.log("🔴 e", e);
     return null;
   }
 };

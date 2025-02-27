@@ -17,11 +17,13 @@ import {
   TimelineItem,
   TimelineTitle,
 } from "@/components/ui/timeline";
-import {useAccountAtom} from "@/src/atoms/account.atom";
-import {getIntentByIdAction} from "@/src/actions/intent/get-intent-by-id.action";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { getIntentByIdAction } from "@/src/actions/intent/get-intent-by-id.action";
 import Badge from "@/components/ui/badge/Badge";
+import { useParams } from "next/navigation";
 
-function Page({ params }: { params: { id: string } }) {
+function Page() {
+  const params = useParams<{ id: string }>();
   const { currentAccount } = useAccountAtom();
   const t = useTranslations("intent");
   const locale = useLocale();
@@ -45,12 +47,12 @@ function Page({ params }: { params: { id: string } }) {
       <div className="mt-10">
         <div className={"flex items-center justify-between"}>
           <div
-            className={"flex items-center gap-2 text-xs text-muted-foreground"}
+            className={"text-muted-foreground flex items-center gap-2 text-xs"}
           >
             <Banknote className="h-5 w-5" />
-            <span className="uppercase ">{t("payment")}</span>
+            <span className="uppercase">{t("payment")}</span>
           </div>
-          <div className="flex gap-2 text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex gap-2 text-xs">
             <span className="sm:truncate">{data?.id}</span>
             <Copy
               onClick={() => {
@@ -125,7 +127,7 @@ function Page({ params }: { params: { id: string } }) {
 
           <Separator className={"my-4"} />
 
-          <div className="mb-3 mt-3 flex flex-col">
+          <div className="mt-3 mb-3 flex flex-col">
             <Timeline className="p-0">
               {data?.charges.map((charge) => (
                 <TimelineItem key={charge.id}>

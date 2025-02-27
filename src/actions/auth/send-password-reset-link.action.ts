@@ -1,22 +1,21 @@
 "use server";
 import * as Sentry from "@sentry/nextjs";
 
-export const sendPasswordResetLink = async (id: string) => {
-  const host = process.env.YABETOO_AUTH_API;
-  const url = `${host}/accounts/forgotpassword`;
+export const sendPasswordResetLink = async (email: string) => {
+  const host = process.env.ACCOUNT_API;
+  const url = `${host}/v1/auth/users/request-password-reset`;
 
   if (!host) {
     throw new Error("AUTH API URL not found");
   }
 
   const response = await fetch(url, {
-    method: "PATCH",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      number: id,
-      yabetooSource: 2,
+      email: email,
     }),
   });
 

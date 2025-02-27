@@ -9,31 +9,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { z } from "zod";
 import { FileUploader } from "@/components/file-uploader";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Trash } from "lucide-react";
-import {paymentLinkSchema} from "@/src/shemas/payments-link/payment-link.schema";
-import {useConfirm} from "@/components/ui/confirm-dialog";
-
-const currencies = [{ label: "Franc CFA", value: "xaf" }] as const;
+import { paymentLinkSchema } from "@/src/shemas/payments-link/payment-link.schema";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 
 function CreateLinkChooseWhatToPay({
   form,
@@ -99,73 +83,12 @@ function CreateLinkChooseWhatToPay({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="currency"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>{t("currency")}</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "w-[200px] justify-between",
-                          !field.value && "text-muted-foreground",
-                        )}
-                      >
-                        {field.value
-                          ? currencies.find(
-                              (language) => language.value === field.value,
-                            )?.label
-                          : t("selectCurrency")}
-                        <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder="Search currency..."
-                        className="h-9"
-                      />
-                      <CommandEmpty>No currency found.</CommandEmpty>
-                      <CommandGroup>
-                        {currencies.map((language) => (
-                          <CommandItem
-                            value={language.label}
-                            key={language.value}
-                            onSelect={() => {
-                              form.setValue("currency", language.value);
-                            }}
-                          >
-                            {language.label}
-                            <CheckIcon
-                              className={cn(
-                                "ml-auto h-4 w-4",
-                                language.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           <FormField
             control={form.control}
             name="isLimited"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 py-2">
+              <FormItem className="flex flex-row items-start space-y-0 space-x-3 py-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -238,7 +161,7 @@ function CreateLinkChooseWhatToPay({
               <div className="flex items-center gap-4">
                 <Image src={doc.url} alt={doc.key} width={100} height={100} />
                 <div className="flex flex-col gap-1">
-                  <p className="truncate text-sm text-muted-foreground">
+                  <p className="text-muted-foreground truncate text-sm">
                     {doc.name}
                   </p>
                   <Button

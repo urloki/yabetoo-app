@@ -48,10 +48,10 @@ export const {
         session.user = token.user;
       }
 
-      if (!session.user.session_expiry) {
+      /*if (!session.user.session_expiry) {
         const exp = new Date(new Date().getTime() + 120 * 1000).toISOString();
         session.user.session_expiry = exp;
-      }
+      }*/
 
       return session;
     },

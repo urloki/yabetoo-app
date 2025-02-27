@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { defineStepper } from "@stepperize/react";
 import BusinessType, {
   businessTypeSchema,
@@ -15,8 +14,6 @@ import { useTranslations } from "next-intl";
 import StepperHeader from "@/src/features/onboarding/stepper/stepper-header";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { useQuery } from "@tanstack/react-query";
-import { getMerchantDetail } from "@/src/actions/entities/get-merchant.action";
 import PersonalInfo, {
   personalInfoSchema,
 } from "@/src/features/onboarding/components/personal-info";
@@ -36,7 +33,7 @@ import { toast } from "sonner";
 
 function Page() {
   const t = useTranslations("activateAccount");
-  const { useStepper } = defineStepper(
+  const { useStepper, utils } = defineStepper(
     {
       id: "businessType",
       title: t("businessType"),
@@ -70,10 +67,6 @@ function Page() {
   );
   const stepper = useStepper();
   const { personalData, updatePersonalData } = useOnboardingAtom();
-  const { data: merchant } = useQuery({
-    queryKey: ["merchant"],
-    queryFn: () => getMerchantDetail(),
-  });
 
   const { currentAccount, setCurrentAccount } = useAccountAtom();
   const router = useRouter();
@@ -84,12 +77,12 @@ function Page() {
     values: {
       ...personalData,
       countryId: currentAccount?.countryId.toString() ?? "1",
-      firstname: personalData.firstname ?? merchant?.managerFirstName ?? "",
-      lastname: personalData.lastname ?? merchant?.managerName ?? "",
-      email: personalData.email ?? merchant?.managerEmail ?? "",
+      firstname: personalData.firstname ?? "",
+      lastname: personalData.lastname ?? "",
+      email: personalData.email ?? "",
       dateOfBirth: personalData.dateOfBirth ?? "",
       phoneNumber: personalData.phoneNumber ?? "",
-      address: personalData.address ?? merchant?.address ?? "",
+      address: personalData.address ?? "",
       productDescription: personalData.productDescription ?? "",
       industry: personalData.industry ?? "",
       businessWebsite: personalData.businessWebsite ?? "",
@@ -126,9 +119,10 @@ function Page() {
           {
             success: (response) => {
               queryClient.invalidateQueries({
-                queryKey: ["accounts"],
+                queryKey: ["organizations"],
               });
-              // @ts-ignore
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               setCurrentAccount(response);
               updatePersonalData({ isLoading: false });
               router.push("/");
@@ -155,7 +149,7 @@ function Page() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="">
-          <StepperHeader stepper={stepper as never} />
+          <StepperHeader stepper={stepper as never} utils={utils} />
           <div className="px-5 py-10 pt-52 md:ml-80 md:max-w-2xl md:px-10 md:pt-10">
             {stepper.switch({
               businessType: () => <BusinessType form={form as never} />,

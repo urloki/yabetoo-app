@@ -22,9 +22,22 @@ import { useTranslations } from "next-intl";
 import LocaleSwitcher from "@/components/locale-switcher";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import {AutoForm} from "@/components/ui/autoform";
-import {ZodProvider} from "@autoform/zod";
-import {sendPasswordResetLink} from "@/src/actions/auth/send-password-reset-link.action";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { sendPasswordResetLink } from "@/src/actions/auth/send-password-reset-link.action";
+
+const schema = z.object({
+  username: z.string().email().describe("username"),
+});
 
 function Page() {
   const { theme, systemTheme } = useTheme();
@@ -32,30 +45,32 @@ function Page() {
     theme === "dark" || (theme === "system" && systemTheme === "dark");
 
   const t = useTranslations("login");
-
-  const schema = z.object({
-    username: z.string().describe(t("username")),
-  });
-  const schemaProvider = new ZodProvider(schema);
-
   const router = useRouter();
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {},
+  });
 
   const { isPending, mutate } = useMutation({
     mutationKey: ["forgot-password"],
     mutationFn: sendPasswordResetLink,
     onSuccess: () => {
       toast.success(t("passwordResetLinkSent"));
-      router.push("/login");
+      router.push("/reset-password");
     },
     onError: () => {
       toast.error(t("passwordResetError"));
     },
   });
 
+  const onSubmit = async (values: z.infer<typeof schema>) => {
+    mutate(values.username);
+  };
 
   return (
     <div className="md:pt-20">
-      <div className="mx-auto flex flex-col px-5 pb-5 md:w-1/3 md:px-0 ">
+      <div className="mx-auto flex flex-col px-5 pb-5 md:w-1/3 md:px-0">
         <Image
           src={isDark ? logoWhite : logo}
           alt={t("logoAlt")}
@@ -73,21 +88,33 @@ function Page() {
           </CardHeader>
 
           <CardContent>
-            <AutoForm  schema={schemaProvider} onSubmit={(data) => {
-              mutate(data.username);
-            }}>
-              <div>
-                <Button className="w-full" disabled={isPending}>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("username")}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t("username")} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button className="w-full" type="submit" disabled={isPending}>
                   {isPending ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <span>{t("forgotPasswordButton")}</span>
                   )}
                 </Button>
-              </div>
-            </AutoForm>
+              </form>
+            </Form>
           </CardContent>
-          <CardFooter className="m-3 flex items-center justify-center rounded-md bg-muted p-0 py-5">
+
+          <CardFooter className="bg-muted m-3 flex items-center justify-center rounded-md p-0 py-5">
             <p className="text-center text-sm text-gray-500">
               {t("noAccount")}{" "}
               <Link className="text-primary" href="/register">

@@ -1,5 +1,4 @@
-import { Locale } from "@/app.config";
-import LoadData from "@/components/load-data";
+import { LoadData } from "@/components/load-data";
 import { ConfirmDialogProvider } from "@/components/ui/confirm-dialog";
 import {
   SidebarInset,
@@ -8,12 +7,10 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/src/features/navigation/app-sidebar";
 import Header from "@/src/features/navigation/header";
+import React from "react";
 
 type Props = {
   children: React.ReactNode;
-  params: {
-    locale: Locale;
-  };
 };
 const DashboardLayout: React.FC<Props> = async ({ children }) => {
   return (

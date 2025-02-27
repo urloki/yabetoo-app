@@ -14,18 +14,20 @@ import { useTranslations } from "next-intl";
 import { cleanOptionsValues } from "@/lib/utils";
 import Loader from "@/components/loader";
 import { FormUnsavedBar } from "@/src/features/form/form-unsaved-bar";
-import {useAccountAtom} from "@/src/atoms/account.atom";
-import {getProductById} from "@/src/actions/product/get-product-by-id";
-import {updateProduct} from "@/src/actions/product/update-product";
-import {Product, productSchema} from "@/src/shemas/product/product.schema";
-import {jsonToFormData} from "@/lib/json-to-form-data";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { getProductById } from "@/src/actions/product/get-product-by-id";
+import { updateProduct } from "@/src/actions/product/update-product";
+import { Product, productSchema } from "@/src/shemas/product/product.schema";
+import { jsonToFormData } from "@/lib/json-to-form-data";
 import VariantModule from "@/src/features/products/variants/variant-module";
 import ProductImage from "@/src/features/products/modules/product-image";
+import { useParams } from "next/navigation";
 
-function Page({ params }: { params: { id: string } }) {
+function Page() {
   const { currentAccount } = useAccountAtom();
   const router = useRouter();
   const t = useTranslations("product");
+  const params = useParams<{ id: string }>();
 
   const { data, isLoading } = useQuery({
     queryKey: ["show-product", params.id, currentAccount?.id],
@@ -86,8 +88,8 @@ function Page({ params }: { params: { id: string } }) {
     <Loader isLoading={isLoading}>
       <FormUnsavedBar form={form} onSubmit={onSubmit} btnText="Mofidier">
         <div className="flex flex-col">
-          <main className="my-5 grid flex-1 items-start gap-4 overflow-y-auto ">
-            <div className=" grid flex-1 auto-rows-max gap-4">
+          <main className="my-5 grid flex-1 items-start gap-4 overflow-y-auto">
+            <div className="grid flex-1 auto-rows-max gap-4">
               <div className="flex items-center gap-4">
                 <Button variant="outline" size="icon" className="h-7 w-7">
                   <Link href={"/products"}>
@@ -95,7 +97,7 @@ function Page({ params }: { params: { id: string } }) {
                   </Link>
                   <span className="sr-only">Back</span>
                 </Button>
-                <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
+                <h1 className="flex-1 shrink-0 text-xl font-semibold tracking-tight whitespace-nowrap sm:grow-0">
                   {form.watch("name") || t("untitled")}
                 </h1>
                 <div className="hidden items-center gap-2 md:ml-auto md:flex">
@@ -118,9 +120,7 @@ function Page({ params }: { params: { id: string } }) {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Button  type="submit">
-                  Modifier
-                </Button>
+                <Button type="submit">Modifier</Button>
               </div>
             </div>
           </main>

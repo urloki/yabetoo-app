@@ -1,10 +1,10 @@
 "use client";
-import { useAccountAtom } from "@/src/atoms/account-atom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { numberFormat } from "@/lib/utils";
-import type { paymentLinkSchema } from "@/src/schemas/payment-link-schema";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { paymentLinkSchema } from "@/src/shemas/payments-link/payment-link.schema";
 import { Store } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 import type { z } from "zod";
@@ -59,7 +59,7 @@ function ProductPanel({
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400 ">
+                    <span className="text-gray-400">
                       Qty {product.quantity}
                     </span>
                     <span className="text-gray-400">
@@ -96,7 +96,7 @@ function ProductPanel({
       </div>
 
       <div className="pb-36 text-gray-400">
-        Powered by <span className="font-bold text-primary">Yabetoo</span>
+        Powered by <span className="text-primary font-bold">Yabetoo</span>
       </div>
     </div>
   );

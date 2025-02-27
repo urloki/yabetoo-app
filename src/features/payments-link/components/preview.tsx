@@ -1,10 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
-import ProductPanel from "@/components/payment-links/product-panel";
 import type { UseFormReturn } from "react-hook-form";
-import PaymentPanel from "@/components/payment-links/payment-panel";
-import type { paymentLinkSchema } from "@/src/schemas/payment-link-schema";
+
 import type { z } from "zod";
 import { cn } from "@/lib/utils";
+import { paymentLinkSchema } from "@/src/shemas/payments-link/payment-link.schema";
+import PaymentPanel from "./payment-panel";
+import ProductPanel from "./product-panel";
 
 function Preview({
   form,

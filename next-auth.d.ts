@@ -4,8 +4,12 @@ import { UserType } from "@/src/shemas/auth/user.schema";
 declare module "next-auth" {
   interface Session {
     user: {
-      token: string;
-      session_expiry: string;
+      token: {
+        token: string;
+        expiresAt: string;
+        abilities: string[];
+      };
+      expiresAt: string;
     } & DefaultSession["user"] &
       UserType;
   }

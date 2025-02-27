@@ -27,7 +27,7 @@ export const createPayoutMethodAction = async ({
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.user?.token}`,
+      Authorization: `Bearer ${session?.user?.token.token}`,
     },
     body: JSON.stringify(data),
   });

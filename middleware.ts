@@ -6,7 +6,7 @@ import {
   apiAuthRoutes,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
-  publicRoutes
+  publicRoutes,
 } from "@/routes";
 import type { NextRequest } from "next/server";
 import { i18n } from "@/app.config";
@@ -26,7 +26,6 @@ const authMiddleware = auth(async (req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthRoutes);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-
 
   /*if (isLoggedIn && isAdminRoute) {
     const user = req.auth?.user;
@@ -85,5 +84,10 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    "/((?!.+\\.[\\w]+$|_next).*)",
+    "/",
+    "/(api|trpc)(.*)",
+    "/(fr|en)/:path*",
+  ],
 };

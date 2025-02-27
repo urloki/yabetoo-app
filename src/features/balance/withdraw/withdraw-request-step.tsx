@@ -1,7 +1,6 @@
 "use client";
 
 import { z } from "zod";
-import { useStepper } from "@/components/ui/stepper";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,13 +16,13 @@ import {
 } from "@/components/ui/form";
 import { MoneyInput } from "@/components/ui/money-input";
 import { Button } from "@/components/ui/button";
-import { numberFormat } from "@/lib/utils";
 import { SheetClose } from "@/components/ui/sheet";
 import { Icons } from "@/components/icons";
 import { queryClient } from "@/src/providers/react-query-provider";
-import {useWithdrawAtom} from "@/src/atoms/withdraw.atom";
-import {useAccountAtom} from "@/src/atoms/account.atom";
-import {requestWithdraw} from "@/src/actions/withdraw/request-withdraw.action";
+import { useWithdrawAtom } from "@/src/atoms/withdraw.atom";
+import { useAccountAtom } from "@/src/atoms/account.atom";
+import { requestWithdraw } from "@/src/actions/withdraw/request-withdraw.action";
+import { Stepper } from "@stepperize/react";
 
 const FirstFormSchema = z.object({
   amount: z.string().refine((value) => value !== "", {
@@ -31,8 +30,13 @@ const FirstFormSchema = z.object({
   }),
 });
 
-function WithdrawRequestStep({ balance }: { balance: number }) {
-  const { nextStep } = useStepper();
+function WithdrawRequestStep({
+  balance,
+  stepper,
+}: {
+  balance: number;
+  stepper: Stepper;
+}) {
   const t = useTranslations("payment");
   const { setWithdrawId } = useWithdrawAtom();
 
@@ -51,7 +55,7 @@ function WithdrawRequestStep({ balance }: { balance: number }) {
       });
       console.log(response);
       setWithdrawId(response.withdrawId);
-      nextStep();
+      stepper.next();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -90,7 +94,7 @@ function WithdrawRequestStep({ balance }: { balance: number }) {
           />
         </div>
 
-        <div className="flex w-full items-center justify-end mt-10">
+        <div className="mt-10 flex w-full items-center justify-end">
           <SheetClose asChild>
             <Button variant="underline">{t("cancel")}</Button>
           </SheetClose>

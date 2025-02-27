@@ -169,4 +169,9 @@ export const objectTypes = [
     label: "Transfert",
     icon: CheckCircledIcon,
   },
+  {
+    value: "cash-out",
+    label: "Retrait",
+    icon: CheckCircledIcon,
+  },
 ];

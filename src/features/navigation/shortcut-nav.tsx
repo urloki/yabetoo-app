@@ -44,8 +44,8 @@ function ShortcutNav() {
                     className={cn(
                       isActive(item.path)
                         ? "bg-primary"
-                        : "hover:text-primary dark:text-gray-400 hover:dark:text-gray-50",
-                      "flex items-center gap-x-2.5 px-2 py-1.5 text-sm font-medium transition hover:dark:bg-gray-900",
+                        : "hover:text-primary dark:text-gray-400 dark:hover:text-gray-50",
+                      "flex items-center gap-x-2.5 px-2 py-1.5 text-sm font-medium transition dark:hover:bg-gray-900",
                     )}
                   >
                     {item.isPinned ? (

@@ -4,9 +4,10 @@ import { auth } from "@/auth";
 interface AccountInterface {
   name: string;
   countryId: number;
+  organizationId: string;
 }
 
-export const createAccount = async (data: AccountInterface) => {
+export async function createAccount(data: AccountInterface) {
   const session = await auth();
 
   const host = process.env.ACCOUNT_API;
@@ -21,10 +22,10 @@ export const createAccount = async (data: AccountInterface) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.user?.token}`,
+      Authorization: `Bearer ${session?.user?.token.token}`,
     },
     body: JSON.stringify(data),
   });
 
   return await response.json();
-};
+}

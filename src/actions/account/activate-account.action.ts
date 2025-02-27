@@ -22,7 +22,7 @@ export const activateAccountAction = async ({
   await axios
     .post(url, formData, {
       headers: {
-        Authorization: `Bearer ${session?.user?.token}`,
+        Authorization: `Bearer ${session?.user?.token.token}`,
       },
     })
     .then((response) => {

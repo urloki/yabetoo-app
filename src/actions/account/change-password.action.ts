@@ -22,7 +22,7 @@ export const changePassword = async (data: PasswordInterface) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.user?.token}`,
+      Authorization: `Bearer ${session?.user?.token.token}`,
     },
     body: JSON.stringify(data),
   });
