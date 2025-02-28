@@ -26,6 +26,9 @@ const authMiddleware = auth(async (req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthRoutes);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  //const organizations = await getOrganizations();
+
+  //console.log(organizations);
 
   /*if (isLoggedIn && isAdminRoute) {
     const user = req.auth?.user;

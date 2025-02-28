@@ -39,9 +39,7 @@ function Loader({
 
 export function LoadData({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { data: session, status } = useSession();
-
-  console.log("🔴 session", session);
+  const { status } = useSession();
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -53,8 +51,6 @@ export function LoadData({ children }: { children: React.ReactNode }) {
     queryKey: ["organizations"],
     queryFn: () => getOrganizations(),
   });
-
-  console.log("🔴 organizations", organizations);
 
   const {
     currentAccount,
@@ -72,16 +68,21 @@ export function LoadData({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    // Ne rien faire si l'authentification est en cours de chargement
     if (status === "loading") return;
 
+    // Ne rien faire si les organisations sont en cours de chargement
     if (isLoading) return;
 
-    if (organizations && organizations?.length === 0) {
-      router.push("/org");
-    } else if (organizations && organizations?.length > 0) {
+    console.log("🔴 organizations", organizations);
+
+    // Si nous avons des organisations, les configurer
+    if (organizations && organizations.length > 0) {
       setOrganizations(organizations);
       setCurrentOrganization(organizations[0]);
-      if (organizations[0].accounts.length === 0) {
+
+      // Vérifier si l'organisation a des comptes
+      if (organizations[0].accounts?.length === 0) {
         router.push("/account");
       } else if (!currentAccount && organizations) {
         setCurrentAccount(organizations[0].accounts[0]);
@@ -91,6 +92,15 @@ export function LoadData({ children }: { children: React.ReactNode }) {
       } else {
         setDataLoaded(true);
       }
+    }
+    // Rediriger vers /org uniquement si nous sommes sûrs qu'il n'y a pas d'organisations
+    // et que nous ne sommes pas déjà sur la page /org
+    else if (
+      organizations &&
+      organizations.length === 0 &&
+      !window.location.pathname.includes("/org")
+    ) {
+      router.push("/org");
     }
   }, [
     accounts,
