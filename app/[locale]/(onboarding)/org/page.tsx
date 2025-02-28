@@ -32,6 +32,8 @@ import {
 } from "@/components/ui/card";
 import { transferAccountsOrganization } from "@/src/actions/organization/transfer-accounts-organization.action";
 import { getCountries } from "@/src/actions/entities/get-countries.action";
+import { getOrganizations } from "@/src/actions/organization/oraganization.action";
+import { useEffect } from "react";
 
 const createOrganizationSchema = z.object({
   name: z.string().min(2).max(50),
@@ -46,14 +48,9 @@ export default function CreateOrganizationPage() {
   const t = useTranslations("organization");
   const router = useRouter();
 
-  const form = useForm<CreateOrganizationForm>({
-    resolver: zodResolver(createOrganizationSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      accountName: "",
-      countryId: "",
-    },
+  const { data: organizations, isLoading: isLoadingOrganizations } = useQuery({
+    queryKey: ["organizations"],
+    queryFn: () => getOrganizations(),
   });
 
   const { data: countries, isLoading: isLoadingCountries } = useQuery({
@@ -66,11 +63,15 @@ export default function CreateOrganizationPage() {
     queryFn: getAccounts,
   });
 
-  const accountsWithoutOrg =
-    accounts?.filter((account) => account.organizationId === null) || [];
-
-  console.log("🔴 accountsWithoutOrg", accountsWithoutOrg);
-  console.log("🔴 from err", form.formState.errors);
+  const form = useForm<CreateOrganizationForm>({
+    resolver: zodResolver(createOrganizationSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      accountName: "",
+      countryId: "",
+    },
+  });
 
   const { mutate: createOrg, isPending } = useMutation({
     mutationKey: ["create-organization"],
@@ -108,6 +109,34 @@ export default function CreateOrganizationPage() {
     },
   });
 
+  useEffect(() => {
+    if (organizations && organizations.length > 0) {
+      router.push("/");
+    }
+  }, [organizations, router]);
+
+  const accountsWithoutOrg =
+    accounts?.filter((account) => account.organizationId === null) || [];
+
+  console.log("🔴 accountsWithoutOrg", accountsWithoutOrg);
+  console.log("🔴 from err", form.formState.errors);
+
+  if (isLoadingOrganizations) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    );
+  }
+
   const getErrorMessage = (error: any, field: keyof CreateOrganizationForm) => {
     if (!error) return "";
 
@@ -144,14 +173,6 @@ export default function CreateOrganizationPage() {
     console.log("🔴 form err", form.formState.errors);
 
     createOrg(values);
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin" />
-      </div>
-    );
   }
 
   return (
