@@ -171,7 +171,7 @@ export const objectTypes = [
   },
   {
     value: "cash_out",
-    label: "Retrait",
+    label: "Cash out",
     icon: CheckCircledIcon,
   },
 ];
