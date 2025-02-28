@@ -45,7 +45,11 @@ export function LoadData({ children }: { children: React.ReactNode }) {
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  const { data: organizations, isError } = useQuery({
+  const {
+    data: organizations,
+    isError,
+    isLoading,
+  } = useQuery({
     queryKey: ["organizations"],
     queryFn: () => getOrganizations(),
   });
@@ -69,6 +73,8 @@ export function LoadData({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (status === "loading") return;
+
+    if (isLoading) return;
 
     if (organizations && organizations?.length === 0) {
       router.push("/org");
@@ -96,6 +102,7 @@ export function LoadData({ children }: { children: React.ReactNode }) {
     setCurrentOrganization,
     setOrganizations,
     status,
+    isLoading,
   ]);
 
   return <Loader isLoading={!dataLoaded}>{children}</Loader>;
