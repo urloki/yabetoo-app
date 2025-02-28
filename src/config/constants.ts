@@ -170,7 +170,7 @@ export const objectTypes = [
     icon: CheckCircledIcon,
   },
   {
-    value: "cash-out",
+    value: "cash_out",
     label: "Retrait",
     icon: CheckCircledIcon,
   },
