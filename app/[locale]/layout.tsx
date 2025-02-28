@@ -53,7 +53,7 @@ const RootLayout: React.FC<Props> = async ({ children, params }) => {
             <AuthProvider session={session}>
               <AutoLogoutProvider>
                 <JotaiProvider>
-                  <ThemeProvider defaultTheme="system">
+                  <ThemeProvider defaultTheme="dark">
                     {children}
                     <Toaster
                       richColors
